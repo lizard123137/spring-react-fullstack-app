@@ -1,16 +1,7 @@
-function Header() {
+export default function Header() {
     return (
-        <header className='flex flex-row justify-between'>
-            <h1 className="text-5xl">Drogon App</h1>
-            <nav>
-                <ul className='flex flex-row'>
-                    <li className='p-5'><a href="#">Articles</a></li>
-                    <li className='p-5'><a href="#">About me</a></li>
-                    <li className='p-5'><a href="#">Contact</a></li>
-                </ul>
-            </nav>
+        <header className='p-60 w-full text-center bg-gradient-to-t from-gray-950 to-violet-950'>
+            <h1 className="text-7xl text-transparent bg-clip-text bg-gradient-to-t from-green-900 to-green-400 font-bold">Drogon Blog</h1>
         </header>
     );
 }
-
-export default Header

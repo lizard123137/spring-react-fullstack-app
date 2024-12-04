@@ -24,11 +24,13 @@ export default function App() {
   }, [])
 
   return (
-    <div className='text-slate-900 dark:text-white bg-white dark:bg-slate-800 h-full'>
+    <div className='text-white bg-gray-950 h-full'>
       <Header/>
-      {posts.map((post) => {
-        return <Article slug={post.id.toString()} content={post.title}/>
-      })}
+      <div className='px-10'>
+        {posts.map((post) => {
+          return <Article slug={post.id.toString()} content={post.title}/>
+        })}
+      </div>
       <Footer/>
     </div>
   );
