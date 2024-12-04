@@ -1,12 +1,10 @@
-function Article() {
+export default function Article({slug, content}: { slug: string, content: string }) {
     return (
         <article>
-            <h2>Why drogon is cool</h2>
+            <h2>{slug}</h2>
             <div>
-                <p>Because its in c++ and thats really cool</p>
+                <p>{content}</p>
             </div>
         </article>
     );
 }
-
-export default Article
