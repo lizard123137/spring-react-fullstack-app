@@ -2,7 +2,7 @@
 
 This is a fullstack web app I am making for one of my classes.
 
-The idea is to create a website for a band to host their upcomming events as well as their music and their about page. The app should also have a CMS for managing the content.
+The current idea for the application is to create a real time group chat application.
 
 Tech stack:
 - Drogon - Used to build the backend
