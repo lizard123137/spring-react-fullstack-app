@@ -6,6 +6,9 @@ services:
     ports:
       - "5173:5173"
     stdin_open: true
+    networks:
+      - app-network
+    container_name: react_frontend
   
   backend:
     build:
@@ -13,12 +16,19 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    networks:
+      - app-network
+    container_name: drogon_backend
 
-  postgres:
-    image: postgres:14-alpine
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=drogon
-      - POSTGRES_PASSWORD=drogon
-      - POSTGRES_DB=app
+  # postgres:
+  #   image: postgres:14-alpine
+  #   ports:
+  #     - 5432:5432
+  #   environment:
+  #     - POSTGRES_USER=drogon
+  #     - POSTGRES_PASSWORD=drogon
+  #     - POSTGRES_DB=app
+
+networks:
+  app-network:
+    driver: bridge
