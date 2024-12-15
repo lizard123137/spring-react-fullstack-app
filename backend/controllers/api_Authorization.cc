@@ -3,7 +3,7 @@
 using namespace api;
 
 // Add definition of your processing function here
-void Authorization::login(
+void Authorization::loginUser(
     const HttpRequestPtr& req,
     std::function<void (const HttpResponsePtr&)>&& callback
 ) {
@@ -62,4 +62,11 @@ void Authorization::login(
             resp->setStatusCode(drogon::k500InternalServerError);
             callback(resp);
         };
+}
+    
+void Authorization::registerUser(
+    const HttpRequestPtr& req,
+    std::function<void (const HttpResponsePtr&)>&& callback
+) {
+
 }
