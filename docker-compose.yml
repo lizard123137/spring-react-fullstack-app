@@ -2,32 +2,34 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: frontend.Dockerfile
     ports:
       - "5173:5173"
     stdin_open: true
     networks:
       - app-network
-    container_name: react_frontend
   
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: backend.Dockerfile
     ports:
       - "8080:8080"
     networks:
       - app-network
-    container_name: drogon_backend
 
-  # postgres:
-  #   image: postgres:14-alpine
-  #   ports:
-  #     - 5432:5432
-  #   environment:
-  #     - POSTGRES_USER=drogon
-  #     - POSTGRES_PASSWORD=drogon
-  #     - POSTGRES_DB=app
+  db:
+    build:
+      context: ./backend
+      dockerfile: postgres.Dockerfile
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=drogon
+    networks:
+      - app-network
 
 networks:
   app-network:

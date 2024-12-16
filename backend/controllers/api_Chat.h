@@ -1,6 +1,7 @@
 #pragma once
 
 #include <drogon/WebSocketController.h>
+#include <drogon/PubSubService.h>
 
 using namespace drogon;
 
@@ -8,7 +9,7 @@ namespace api
 {
 class Chat : public drogon::WebSocketController<Chat>
 {
-  public:
+public:
      void handleNewMessage(const WebSocketConnectionPtr&,
                                   std::string &&,
                                   const WebSocketMessageType &) override;
@@ -18,5 +19,7 @@ class Chat : public drogon::WebSocketController<Chat>
     WS_PATH_LIST_BEGIN
     WS_PATH_ADD("/api/chat", Get);
     WS_PATH_LIST_END
+private:
+    PubSubService<std::string> chatRooms;
 };
 }

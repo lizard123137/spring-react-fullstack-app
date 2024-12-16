@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+    .input {
+        @apply w-full px-5 py-2 rounded-lg focus:ring-violet-500
+    }
+    .btn-primary {
+        @apply block w-full px-5 py-2 bg-violet-500 text-center text-white font-semibold rounded-full shadow-md hover:bg-violet-700
+    }
+    .btn-secondary{
+        @apply block w-full px-5 py-2 bg-green-400 text-center text-white font-semibold rounded-full shadow-md hover:bg-green-600
+    }
+}
+
 #root {
   height: 100%;
 }
