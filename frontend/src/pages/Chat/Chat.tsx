@@ -1,6 +1,7 @@
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useEffect, useState } from "react";
 import Message from "./Message";
+import DarkModeSwitch from "../../components/darkModeSwitch";
 
 export default function Chat() {
     const WS_URL = "ws://localhost:8080/api/chat";
@@ -37,12 +38,13 @@ export default function Chat() {
     };
 
     return (
-        <div className="h-screen bg-gray-800">
-            <header className="bg-violet-500 fixed top-0 w-full h-20">
-                <h1 className="text-4xl text-white">Example channel name</h1>
+        <div className="h-screen dark:bg-gray-800">
+            <header className="bg-violet-500 text-white fixed top-0 w-full h-20 flex justify-between">
+                <h1 className="ml-5 text-4xl font-bold flex items-center">Example channel name</h1>
+                <DarkModeSwitch />
             </header>
 
-            <div className="fixed top-20 overflow-y-auto">
+            <div className="fixed top-20 px-5 overflow-y-auto">
                 <Message content="test message"/>
                 {messages.map((m) => (
                     <Message content={m}/>
@@ -51,12 +53,12 @@ export default function Chat() {
             </div>
 
             <footer className="w-full fixed bottom-0">
-                <p className="text-white">Websocket status: {connectionStatus[readyState]}</p>
+                <p className="dark:text-white">Websocket status: {connectionStatus[readyState]}</p>
                 <form 
                     className="block w-full flex flex-row"
                     onSubmit={handleSubmit}>
                     <input
-                        className="input basis-3/4"
+                        className="input basis-3/4 bg-gray-100 dark:bg-slate-600 shadow-lg"
                         type="text"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
