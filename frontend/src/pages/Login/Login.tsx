@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useAuth } from "../../context/AuthProvider";
+import { Link } from "react-router-dom";
 
 export default function Login() {
     const auth = useAuth();
@@ -18,7 +19,7 @@ export default function Login() {
 
     return (
         <div className="h-screen dark:bg-gray-800 dark:text-white flex items-center justify-center">
-            <div className="w-1/2 p-12 dark:bg-slate-900 bg-gray-200 rounded-lg shadow-full">
+            <div className="w-full md:w-1/2 p-12 dark:bg-slate-900 bg-gray-200 rounded-lg shadow-full">
                 <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                     <input
                         type="email"
@@ -36,7 +37,12 @@ export default function Login() {
                         required/>
                     <input className="btn-primary" type="submit" value="Sign-in"/>
                 </form>
-                <a href="#" className="btn-secondary mt-3">Register</a>
+                <Link
+                    to={{
+                        pathname: "/register"
+                    }}
+                    className="btn-secondary mt-3"
+                    >Register</Link>
             </div>
         </div>
     )

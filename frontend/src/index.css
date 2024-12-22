@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 @layer components {
+    .heading {
+        @apply text-violet-500 font-bold drop-shadow-sm
+    }
+    .sub-heading {
+        @apply text-green-400 font-bold drop-shadow-sm
+    }
     .input {
         @apply w-full px-5 py-2 rounded-full focus:ring-violet-500
     }
