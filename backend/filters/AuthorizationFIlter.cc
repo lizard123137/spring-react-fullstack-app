@@ -1,5 +1,3 @@
-#pragma once
-
 #include "AuthorizationFilter.h"
 
 using namespace drogon;

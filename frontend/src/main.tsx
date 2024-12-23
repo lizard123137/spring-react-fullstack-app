@@ -1,15 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
 import { AuthProvider } from './context/AuthProvider';
+import { ThemeProvider } from './hooks/ThemeProvider';
 
 import Chat from './pages/Chat/Chat';
 import NotFound from './pages/NotFound/NotFound';
 import Home from './pages/Home/Home';
-import Login from './pages/Login/Login';
+import Login from './pages/Authentication/Login';
+import Register from './pages/Authentication/Register';
 
 import './index.css';
-import { ThemeProvider } from './hooks/ThemeProvider';
 
 const router = createBrowserRouter([
   {
@@ -20,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />
+  },
+  {
+    path: "/register",
+    element: <Register />
   },
   {
     path: "/chat",

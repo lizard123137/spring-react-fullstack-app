@@ -1,24 +1,27 @@
 services:
   frontend:
+    container_name: react
     build:
       context: ./frontend
       dockerfile: frontend.Dockerfile
     ports:
       - "5173:5173"
     stdin_open: true
-    networks:
-      - app-network
+    depends_on:
+      - backend
   
   backend:
+    container_name: drogon
     build:
       context: ./backend
       dockerfile: backend.Dockerfile
     ports:
       - "8080:8080"
-    networks:
-      - app-network
+    depends_on:
+      - db
 
   db:
+    container_name: db
     build:
       context: ./backend
       dockerfile: postgres.Dockerfile
@@ -28,9 +31,3 @@ services:
       - POSTGRES_USER=docker
       - POSTGRES_PASSWORD=docker
       - POSTGRES_DB=drogon
-    networks:
-      - app-network
-
-networks:
-  app-network:
-    driver: bridge

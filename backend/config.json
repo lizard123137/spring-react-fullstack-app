@@ -8,6 +8,18 @@
             "https": false
         }
     ],
+    "db_clients": [
+        {
+            "name": "",
+            "rdbms": "postgresql",
+            "host": "db",
+            "port": 5432,
+            "dbname": "drogon",
+            "user": "docker",
+            "passwd": "docker",
+            "is_fast": false
+        }
+    ],
     "app": {
         "number_of_threads": 1,
         

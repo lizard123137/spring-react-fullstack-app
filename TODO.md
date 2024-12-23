@@ -25,7 +25,7 @@ Some of them such as user authorization are more crucial than others and some ar
     - [ ] Delete user account functionality
     - [ ] User profiles
     - [X] Login page
-    - [ ] Register page
+    - [X] Register page
 
 - [ ] Chatting
     - [ ] md formatting in user messages
@@ -33,3 +33,7 @@ Some of them such as user authorization are more crucial than others and some ar
 
 - [ ] Other functionality
     - [X] Home page
+
+### Docker
+- [ ] Mount react app as a volume for real time updates
+- [ ] Configure watch, so that backend automatically rebuilds
