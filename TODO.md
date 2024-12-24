@@ -35,5 +35,5 @@ Some of them such as user authorization are more crucial than others and some ar
     - [X] Home page
 
 ### Docker
-- [ ] Mount react app as a volume for real time updates
+- [X] Mount react app as a volume for real time updates
 - [ ] Configure watch, so that backend automatically rebuilds

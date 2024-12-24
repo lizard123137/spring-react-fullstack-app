@@ -8,14 +8,14 @@ export default function Chat() {
     
     const [ messages, setMessages] = useState<string[]>([])
     const [ message, setMessage ] = useState<string>("");
-    const { sendMessage, readyState, lastJsonMessage } = useWebSocket(WS_URL, {
-        share: true,
-        queryParams: { }
-    });
+    const { sendMessage, readyState, lastJsonMessage } = useWebSocket(WS_URL);
 
     useEffect(() => {
         if (lastJsonMessage)
-            setMessages((prevMessages => [...prevMessages, lastJsonMessage.toString()]));
+            setMessages((prevMessages => [
+                ...prevMessages,
+                JSON.stringify(lastJsonMessage)
+            ]));
     }, [lastJsonMessage]);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -36,6 +36,12 @@ export default function Chat() {
         [ReadyState.CLOSED]: 'Closed',
         [ReadyState.UNINSTANTIATED]: 'Uninstantiating',
     };
+
+    // TEST message sending
+    useEffect(() => {
+        const message = { type: "greet", payload: "Hello WebSocket!" };
+        sendMessage(JSON.stringify(message));
+    }, []);
 
     return (
         <div className="h-screen dark:bg-gray-800">
