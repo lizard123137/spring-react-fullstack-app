@@ -33,6 +33,7 @@ Some of them such as user authorization are more crucial than others and some ar
 
 - [ ] Other functionality
     - [X] Home page
+    - [ ] Send emails via contact form
 
 ### Docker
 - [X] Mount react app as a volume for real time updates

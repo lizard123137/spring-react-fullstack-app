@@ -10,13 +10,16 @@
         @apply text-green-400 font-bold drop-shadow-sm
     }
     .input {
-        @apply w-full px-5 py-2 rounded-full focus:ring-violet-500
+        @apply w-full px-5 py-2 rounded-3xl focus:ring-violet-500
+    }
+    .textarea {
+        @apply w-full px-5 py-2 rounded-3xl focus:ring-violet-500
     }
     .btn-primary {
-        @apply block w-full px-5 py-2 bg-violet-500 text-center text-white font-semibold rounded-full shadow-md hover:bg-violet-700
+        @apply block w-full px-5 py-2 bg-violet-500 text-center text-white font-semibold rounded-3xl shadow-md hover:bg-violet-700
     }
     .btn-secondary{
-        @apply block w-full px-5 py-2 bg-green-400 text-center text-white font-semibold rounded-full shadow-md hover:bg-green-600
+        @apply block w-full px-5 py-2 bg-green-400 text-center text-white font-semibold rounded-3xl shadow-md hover:bg-green-600
     }
 }
 

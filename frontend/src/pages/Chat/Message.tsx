@@ -1,5 +1,8 @@
-export default function Message({content}: {content: string}) {
+export default function Message({user, content}: {user: string, content: string}) {
     return (
-        <p className="bg-slate-700 px-5 py-3 mt-5 rounded-full text-white">{content}</p>
+        <div className="mt-3">
+            <p className="ml-3 text-black dark:text-white">{user}</p>
+            <p className="bg-gray-100 dark:bg-slate-700 px-5 py-3 rounded-full dark:text-white">{content}</p>
+        </div>
     )
 }

@@ -50,18 +50,17 @@ export default function Chat() {
                 <DarkModeSwitch />
             </header>
 
-            <div className="fixed top-20 px-5 overflow-y-auto">
-                <Message content="test message"/>
+            <div className="w-full h-full fixed top-20 px-5 overflow-y-auto">
                 {messages.map((m) => (
-                    <Message content={m}/>
+                    <Message user="Michal" content={m}/>
                 ))}
-                <div className="h-32"></div>
+                <div className="h-64"></div>
             </div>
 
             <footer className="w-full fixed bottom-0">
-                <p className="dark:text-white">Websocket status: {connectionStatus[readyState]}</p>
+                <p className="dark:text-white ml-5">Websocket status: {connectionStatus[readyState]}</p>
                 <form 
-                    className="block w-full flex flex-row"
+                    className="block w-full flex flex-col md:flex-row"
                     onSubmit={handleSubmit}>
                     <input
                         className="input basis-3/4 bg-gray-100 dark:bg-slate-600 shadow-lg"

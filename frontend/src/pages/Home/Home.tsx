@@ -1,8 +1,21 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Home() {
+    const [email, setEmail] = useState<string>("");
+    const [message, setMessage] = useState<string>("");
+
+    const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        setEmail("");
+        setMessage("");
+
+        console.log(`${email} said "${message}"`);
+    }
+
     return(
-        <div className="h-screen dark:bg-gray-800 dark:text-white">
+        <div className="dark:bg-gray-800 dark:text-white">
             <header className="p-4 md:p-24 bg-gray-200 dark:bg-slate-900 flex flex-col items-center justify-center">
                 <h1 className="heading p-10 text-4xl md:text-7xl">Drogon chat</h1>
                 <Link
@@ -13,7 +26,7 @@ export default function Home() {
                 >Start Chatting</Link>
             </header>
 
-            <article className="p-2 md:p-20">
+            <article className="px-2 py-4 md:px-20">
                 <h2 className="sub-heading text-center text-3xl md:text-5xl mb-5">About us</h2>
                 <p>
                     Drogon chat is a web application built using the fabulously named <b className="text-green-400">DRIP</b> stack. This particular stack is based on the following technologies:
@@ -35,6 +48,26 @@ export default function Home() {
                     <li>Must be coherent</li>
                     <li>Must follow principles of responsive design</li>
                 </ul>
+            </article>
+
+            <article className="px-2 py-4 md:px-20">
+                <h2 className="sub-heading text-center text-3xl md:text-5xl mb-5">Contact us</h2>
+                <form onSubmit={sendEmail} className="flex flex-col gap-3 text-black">
+                    <input
+                        type="email"
+                        placeholder="Your Email address..."
+                        className="input"
+                        onChange={(e) => setEmail(e.target.value)}
+                        value={email}
+                        required/>
+                    <textarea
+                        placeholder="Your message..."
+                        className="textarea"
+                        onChange={(e) => setMessage(e.target.value)}
+                        value={message}
+                        required/>  
+                    <input className="btn-primary" type="submit" value="Register"/>
+                </form>
             </article>
 
             <footer className="bottom-0 p-5 bg-gray-200 dark:bg-slate-900 text-center">
