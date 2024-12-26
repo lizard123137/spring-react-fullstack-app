@@ -24,6 +24,10 @@ services:
       - "8080:8080"
     depends_on:
       - db
+    develop:
+      watch:
+        - action: rebuild
+          path: ./backend/src/**/*
 
   db:
     container_name: db

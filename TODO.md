@@ -4,6 +4,10 @@ This file contains the tasks that need to be done in order for the app to be fin
 Some of them such as user authorization are more crucial than others and some are outright optional.
 
 ### Backend
+- [ ] General
+    - [ ] Switch backend to laravel (better documentation...)
+    - [ ] Debloat laravel / integrate frontend using inertia (could be the "i" in drip)
+
 - [ ] Authentication
     - [ ] Setup postgresql
     - [ ] Find hashing library
@@ -37,4 +41,5 @@ Some of them such as user authorization are more crucial than others and some ar
 
 ### Docker
 - [X] Mount react app as a volume for real time updates
+- [ ] Fix backend, so that it works with Laravel
 - [ ] Configure watch, so that backend automatically rebuilds
