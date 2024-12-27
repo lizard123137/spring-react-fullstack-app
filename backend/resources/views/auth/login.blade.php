@@ -6,18 +6,20 @@
         <form
             class="bg-slate-700 p-10 rounded-3xl"
             method="POST"
-            action="{{route("api.login")}}">
+            action="{{route("cms.login")}}">
             @csrf
             <div>
                 <input
                     class="input"
                     type="text"
+                    name="email"
                     placeholder="email"
                     id="email"
                     required/>
                 <input
                     class="input"
                     type="password"
+                    name="password"
                     placeholder="password"
                     id="password"
                     required/>
@@ -34,5 +36,4 @@
             @endif
         </form>
     </main>
-
 @endsection

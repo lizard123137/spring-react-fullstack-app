@@ -7,7 +7,12 @@ use App\Http\Controllers\UserController;
 
 Route::view('/login', 'auth.login');
 
+Route::post('/login', [AuthController::class, 'loginCms'])->name('cms.login');
+Route::post('/logout', [AuthController::class, 'logoutCms'])->name('cms.logout');
+
 Route::group(['middleware' => 'is_admin'], function() {
+    Route::view('/dashboard', 'dashboard')->name('cms.dashboard');
+
     Route::group([
         'prefix' => 'users',
     ], function() {

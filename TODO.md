@@ -5,15 +5,12 @@ Some of them such as user authorization are more crucial than others and some ar
 
 ### Backend
 - [ ] General
-    - [ ] Switch backend to laravel (better documentation...)
+    - [X] Switch backend to laravel (better documentation...)
     - [ ] Debloat laravel / integrate frontend using inertia (could be the "i" in drip)
 
 - [ ] Authentication
-    - [ ] Setup postgresql
-    - [ ] Find hashing library
-    - [ ] Add JWT generation and validation
     - [ ] Implement sign-in and register endpoints
-    - [ ] Validate api requests
+    - [X] Validate api requests
 
 - [ ] Chatting
     - [ ] Save messages to DB (do we want to store messages or should it be client-side???)

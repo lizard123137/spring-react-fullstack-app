@@ -9,6 +9,21 @@ use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
+    public function loginCms(Request $request) {
+        $validated = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required']
+        ]);
+
+        if(Auth::attempt($validated)) {
+            return redirect()->route('cms.dashboard');
+        }
+
+        return back()->withErrors([
+            'email' => 'Invalid credentials',
+        ])->withInput();
+    }
+
     public function login(Request $request) {
         $validated = $request->validate([
             'email' => ['required', 'email'],
@@ -16,7 +31,17 @@ class AuthController extends Controller
         ]);
 
         if(Auth::attempt($validated)) {
-            return redirect("/");
+            $user = Auth::user();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Login successful',
+                'user' => $user,
+            ], 200);
         }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Invalid credentials',
+        ], 401);
     }
 }
