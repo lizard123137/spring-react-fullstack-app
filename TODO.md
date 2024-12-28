@@ -6,10 +6,16 @@ Some of them such as user authorization are more crucial than others and some ar
 ### Backend
 - [ ] General
     - [X] Switch backend to laravel (better documentation...)
-    - [ ] Debloat laravel / integrate frontend using inertia (could be the "i" in drip)
+    - [ ] Debloat laravel (research which files can be safely removed)
+
+- [ ] CMS
+    - [ ] Design a generic table view
+    - [ ] Create a menu bar component
+    - [ ] View users
+    - [ ] View group chats
 
 - [ ] Authentication
-    - [ ] Implement sign-in and register endpoints
+    - [X] Implement sign-in and register endpoints
     - [X] Validate api requests
 
 - [ ] Chatting
@@ -20,7 +26,7 @@ Some of them such as user authorization are more crucial than others and some ar
 ### Frontend
 - [ ] Authentication
     - [ ] Send requests using Axios
-    - [ ] Store JWT
+    - [ ] Store tokens
     - [ ] Redirect from protected routes
     - [ ] Sign-out functionality
     - [ ] Delete user account functionality
