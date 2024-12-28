@@ -14,29 +14,37 @@ services:
       - CHOKIDAR_USEPOLLING=true
     depends_on:
       - backend
-  
+ 
   backend:
-    container_name: drogon
     build:
       context: ./backend
-      dockerfile: backend.Dockerfile
-    ports:
-      - "8080:8080"
+      dockerfile: backend.dockerfile
+    restart: unless-stopped
+    networks:
+      - docker-network
+    ports: 
+      - 9000:9000
     depends_on:
-      - db
-    develop:
-      watch:
-        - action: rebuild
-          path: ./backend/src/**/*
+      - db  
 
   db:
-    container_name: db
-    build:
-      context: ./backend
-      dockerfile: postgres.Dockerfile
+    image: bitnami/postgresql:16.3.0
+    platform: linux/amd64
     ports:
       - 5432:5432
+    restart: always
+    volumes:
+      - db-data:/bitnami/postgresql
     environment:
-      - POSTGRES_USER=docker
-      - POSTGRES_PASSWORD=docker
-      - POSTGRES_DB=drogon
+      - POSTGRESQL_DATABASE=laravel
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docker
+    networks:
+      - docker-network
+
+volumes:
+  db-data:
+
+networks:
+  docker-network:
+    driver: bridge
