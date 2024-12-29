@@ -45,4 +45,5 @@ Some of them such as user authorization are more crucial than others and some ar
 ### Docker
 - [X] Mount react app as a volume for real time updates
 - [ ] Fix backend, so that it works with Laravel
-- [ ] Configure watch, so that backend automatically rebuilds
+    - [ ] Configure a nginx container, so that it can host the backend
+    - [ ] Mount application as a volume for hot reloading support

@@ -2,7 +2,7 @@ services:
   frontend:
     container_name: react
     build:
-      context: ./frontend
+      context: ./docker-files
       dockerfile: frontend.Dockerfile
     ports:
       - "5173:5173"
@@ -17,13 +17,18 @@ services:
  
   backend:
     build:
-      context: ./backend
+      args:
+        user: caps
+        uid: 1000
+      context: ./docker-files
       dockerfile: backend.dockerfile
     restart: unless-stopped
     networks:
       - docker-network
     ports: 
       - 9000:9000
+    volumes:
+      - ./backend:/var/www
     depends_on:
       - db  
 
