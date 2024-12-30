@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 
-COPY ../frontend/ .
+COPY . .
 
 EXPOSE 5173
 
