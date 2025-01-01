@@ -20,6 +20,8 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libpq-dev \
     libonig-dev \
+    nodejs \
+    npm \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd
 
@@ -32,16 +34,11 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy the existing application directory contents to the working directory
-WORKDIR /var/www
+# Kind of a workaround until i can get nginx permissions to work
 COPY . .
-
-RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
-
-# Change current user to www
-USER www-data
+RUN npm install && npm run build
+RUN php artisan migrate
 
 # Expose port 9000 and start php-fpm server
-EXPOSE 9000
-CMD ["php-fpm"]
+EXPOSE 8000
+CMD ["composer", "run", "dev"]
