@@ -1,18 +1,4 @@
 services:
-  # nginx:
-  #   container_name: nginx
-  #   image: nginx:alpine
-  #   ports:
-  #     - 8080:80
-  #   depends_on:
-  #     - db
-  #     - backend
-  #   volumes:
-  #     - ./backend:/var/www
-  #     - ./nginx/conf.d/:/etc/nginx/conf.d
-  #   networks:
-  #     - docker-network
-
   db:
     container_name: db
     image: bitnami/postgresql:16.3.0
@@ -23,7 +9,7 @@ services:
     volumes:
       - db-data:/bitnami/postgresql
     environment:
-      - POSTGRESQL_DATABASE=laravel
+      - POSTGRESQL_DATABASE=spring
       - POSTGRESQL_USERNAME=docker
       - POSTGRESQL_PASSWORD=docker
     networks:
@@ -35,7 +21,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports: 
-      - 8000:8000
+      - 8080:8080
     volumes:
       - ./backend:/var/www
     depends_on:
