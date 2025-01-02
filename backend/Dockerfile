@@ -1,9 +1,16 @@
+FROM maven:3.9-eclipse-temurin-23-alpine AS build
+
+WORKDIR /app
+
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
 FROM openjdk:23-jdk
 
-ARG JAR_FILE=target/*.jar
+WORKDIR /app
 
-RUN  groupadd spring && useradd spring -g spring
-USER spring:spring
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE 8080
 
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT [ "java", "-jar", "/app.jar" ]
+ENTRYPOINT [ "java", "-jar", "app.jar" ]

@@ -22,8 +22,6 @@ services:
       dockerfile: Dockerfile
     ports: 
       - 8080:8080
-    volumes:
-      - ./backend:/var/www
     depends_on:
       - db  
     networks:

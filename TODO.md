@@ -47,3 +47,7 @@ Some of them such as user authorization are more crucial than others and some ar
 - [ ] Fix backend, so that it works with Laravel
     - [ ] Configure a nginx container, so that it can host the backend
     - [ ] Mount application as a volume for hot reloading support
+
+### Testing
+- [ ] Add Github actions
+    - [ ] Create automated e2e tests using playwright
