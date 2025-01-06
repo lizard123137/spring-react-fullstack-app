@@ -1,61 +1,54 @@
 package com.dev.caps.backend.services
 
-import com.dev.caps.backend.config.JwtProperties
-import com.dev.caps.backend.models.User
-import io.jsonwebtoken.Claims
+import com.dev.caps.backend.config.security.JwtProperties
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.security.Keys
+import io.jsonwebtoken.SignatureAlgorithm
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
+import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
-import java.time.Instant
 import java.util.*
+import javax.crypto.spec.SecretKeySpec
 
 @Service
 class JwtService(
-    jwtProperties: JwtProperties,
+    private val jwtProperties: JwtProperties,
 ) {
 
-    private val secretKey = Keys.hmacShaKeyFor(jwtProperties.key.toByteArray())
+    private val key = SecretKeySpec(jwtProperties.key.toByteArray(Charsets.UTF_8), SignatureAlgorithm.HS512.toString())
 
-    fun generateToken(
-        user: User,
-        expirationDate: Date,
-        additionalClaims: Map<String, String> = emptyMap()
-    ): String {
+    fun generateToken(authentication: Authentication): String {
+        val username = authentication.name
+
+        val currentDate = Date()
+        val expirationDate = Date(currentDate.time + jwtProperties.accessTokenExpiration)
+
+        // TODO fix deprecated
         return Jwts.builder()
-            .claims()
-            .subject(user.username)
-            .issuedAt(Date.from(Instant.now()))
-            .expiration(expirationDate)
-            .add(additionalClaims)
-            .and()
-            .signWith(secretKey)
+            .setSubject(username)
+            .setIssuedAt(currentDate)
+            .setExpiration(expirationDate)
+            .signWith(key)
             .compact()
     }
 
-    fun extractUsername(token: String): String? {
-        return getAllClaims(token)
+    fun getUsernameFromToken(token: String): String? {
+        return Jwts.parser()
+            .setSigningKey(jwtProperties.key.toByteArray(Charsets.UTF_8))
+            .build()
+            .parseClaimsJwt(token)
+            .body
             .subject
     }
 
-    fun isExpired(token: String): Boolean {
-        return getAllClaims(token)
-            .expiration
-            .before(Date.from(Instant.now()))
-    }
-
-    fun isValid(token: String, user: User): Boolean {
-        val username = extractUsername(token)
-
-        return username == user.username && !isExpired(token)
-    }
-
-    private fun getAllClaims(token: String): Claims {
-        val parser = Jwts.parser()
-            .verifyWith(secretKey)
-            .build()
-
-        return parser
-            .parseSignedClaims(token)
-            .payload
+    fun validateToken(authToken: String): Boolean {
+        try {
+            Jwts.parser()
+                .setSigningKey(jwtProperties.key.toByteArray(Charsets.UTF_8))
+                .build()
+                .parseClaimsJws(authToken)
+            return true
+        } catch (e: Exception) {
+            throw AuthenticationCredentialsNotFoundException("JWT token is invalid or expired")
+        }
     }
 }

@@ -14,11 +14,11 @@ typealias SpringUser = org.springframework.security.core.userdetails.User
 @Service
 class UserService(
     private val userRepository: UserRepository,
-    private val encoder: PasswordEncoder,
-): UserDetailsService {
+    private val passwordEncoder: PasswordEncoder,
+) {
 
     fun save(user: User): User {
-        user.password = encoder.encode(user.password)
+        user.password = passwordEncoder.encode(user.password)
         return userRepository.save(user)
     }
 
@@ -30,10 +30,12 @@ class UserService(
         return userRepository.findByUsername(username)
     }
 
-    override fun loadUserByUsername(username: String): UserDetails {
-        return findByUsername(username)
-            ?.mapToUserDetails()
-            ?: throw UsernameNotFoundException("User not found")
+    fun existsByEmail(email: String): Boolean {
+        return userRepository.existsByEmail(email)
+    }
+
+    fun existsByUsername(username: String): Boolean {
+        return userRepository.existsByUsername(username)
     }
 
     private fun User.mapToUserDetails(): UserDetails {

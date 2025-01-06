@@ -1,4 +1,4 @@
-package com.dev.caps.backend.config
+package com.dev.caps.backend.config.security
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 

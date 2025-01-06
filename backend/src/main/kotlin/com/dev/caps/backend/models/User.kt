@@ -19,8 +19,9 @@ class User {
     @Column
     var password: String = ""
 
+    @ElementCollection(targetClass = Role::class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    var role: Role = Role.USER
+    var roles: Set<Role> = setOf(Role.USER)
 }
 
 data class UserDto(
