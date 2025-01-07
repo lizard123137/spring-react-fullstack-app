@@ -1,6 +1,6 @@
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useTheme } from "../hooks/ThemeProvider";
+import useTheme from "../hooks/useTheme"
 
 export default function DarkModeSwitch() {
     const { isDarkMode, toggleDarkMode } = useTheme();

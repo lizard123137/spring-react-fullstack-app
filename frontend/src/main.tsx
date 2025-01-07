@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import { AuthProvider } from './context/AuthProvider';
-import { ThemeProvider } from './hooks/ThemeProvider';
+import { ThemeProvider } from './context/ThemeProvider';
 
 import Chat from './pages/Chat/Chat';
 import NotFound from './pages/NotFound/NotFound';

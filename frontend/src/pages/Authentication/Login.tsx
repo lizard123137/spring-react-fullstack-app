@@ -1,20 +1,20 @@
 import { useState } from "react"
-import { useAuth } from "../../context/AuthProvider";
+import useAuth from "../../hooks/useAuth"
 import { Link } from "react-router-dom";
 
 export default function Login() {
-    const auth = useAuth();
+    const { login } = useAuth();
 
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [pwd, setPwd] = useState("");
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        setEmail("");
+        setUsername("");
         setPwd("");
     
-        auth.login({email: "test", password: "pass", remember_me: true})
+        login(username, pwd)
     };
 
     return (
@@ -22,11 +22,11 @@ export default function Login() {
             <div className="w-full md:w-1/2 p-12 dark:bg-slate-900 bg-gray-200 rounded-lg shadow-full">
                 <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                     <input
-                        type="email"
-                        placeholder="Email address"
+                        type="username"
+                        placeholder="Username"
                         className="input"
-                        onChange={(e) => setEmail(e.target.value)}
-                        value={email}
+                        onChange={(e) => setUsername(e.target.value)}
+                        value={username}
                         required/>
                     <input
                         type="password"

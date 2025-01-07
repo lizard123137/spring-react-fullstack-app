@@ -1,58 +1,73 @@
-import { createContext, useContext, useState } from "react";
+import axios from "../api/axios";
+import { createContext, useEffect, useState } from "react";
 
-type LoginType = {
+// TODO move user interface to separate file
+interface User {
+    id: number;
+    username: string;
     email: string;
-    password: string;
-    remember_me?: boolean | undefined;
-}
-
-type RegisterType = {
-    email: string;
-    password: string;
 }
 
 interface ProviderProps {
-    user: string | null,
-    token: string,
-    login(data: LoginType): void,
-    register(data: RegisterType): void,
-    logout(): void,
+    user: User | null;
+    token: string | null;
+    login: (username: string, password: string) => Promise<void>;
+    register: (username: string, email:string, password: string) => Promise<void>;
+    logout: () => void;
+    isAuthenticated: boolean;
 }
 
-const AuthContext = createContext<ProviderProps>({
-    user: null,
-    token: "",
-    login: () => {},
-    register: () => {},
-    logout: () => {}
-});
+const AuthContext = createContext<ProviderProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [user, setUser] = useState<string | null>("");
-    const [token, setToken] = useState<string>("");
+    const [user, setUser] = useState<User | null>(null);
+    const [token, setToken] = useState<string | null>(null);
 
-    const login = (data: LoginType) => {
-        console.log(data);
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        const storedToken = localStorage.getItem('token');
+
+        if (storedToken && storedUser) {
+            setToken(storedToken);
+            setUser(JSON.parse(storedUser));
+        }
+    }, []);
+
+    const login = async (username: string, password: string) => {
+        try {
+            const response = await axios.post('/auth/login', { username, password });
+            console.log(response.data);
+        } catch (error) {
+            console.error('Login failed: ', error);
+            throw new Error('Invalid username or password');
+        }
     }
 
-    const register = (data: RegisterType) => {
-        console.log(data);
+    const register = async (username: string, email: string, password: string) => {
+        try {
+            const response = await axios.post('/auth/register', { username, email, password });
+            console.log(response);
+        } catch (error) {
+            console.error('Registration failed: ', error);
+            throw new Error('Registration failed. Please try again...');
+        }
     }
 
     const logout = () => {
-        setUser("");
-        setToken("");
+        setUser(null);
+        setToken(null);
+        
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
     }
 
+    const isAuthenticated = !!token;
+
     return (
-        <AuthContext.Provider value={{ user, token, login, register, logout }}>
+        <AuthContext.Provider value={{ user, token, login, register, logout, isAuthenticated }}>
             {children}
         </AuthContext.Provider>
     )
 }
 
-export default AuthProvider;
-
-export const useAuth = () => {
-    return useContext(AuthContext);
-}
+export default AuthContext;
