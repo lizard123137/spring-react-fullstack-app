@@ -76,6 +76,11 @@
 			<artifactId>postgresql</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<version>4.29.0</version>
+		</dependency>
+		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
 			<version>0.12.6</version>
@@ -126,6 +131,24 @@
 						<groupId>org.jetbrains.kotlin</groupId>
 						<artifactId>kotlin-maven-allopen</artifactId>
 						<version>${kotlin.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<artifactId>kotlin-maven-plugin</artifactId>
+				<groupId>org.jetbrains.kotlin</groupId>
+				<version>1.9.25</version>
+				<configuration>
+					<compilerPlugins>
+						<plugin>spring</plugin>
+						<plugin>jpa</plugin>
+					</compilerPlugins>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.jetbrains.kotlin</groupId>
+						<artifactId>kotlin-maven-noarg</artifactId>
+						<version>1.9.25</version>
 					</dependency>
 				</dependencies>
 			</plugin>

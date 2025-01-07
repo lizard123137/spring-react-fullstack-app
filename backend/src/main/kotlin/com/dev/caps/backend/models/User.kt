@@ -1,33 +1,23 @@
 package com.dev.caps.backend.models
 
 import jakarta.persistence.*
-import java.util.UUID
 
 @Entity
 @Table(name = "users")
-class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: UUID = UUID.randomUUID()
+class User(
+    @Column(unique = true, nullable = false)
+    var username: String,
 
     @Column(unique = true, nullable = false)
-    var username: String = ""
-
-    @Column(unique = true, nullable = false)
-    var email: String = ""
+    var email: String,
 
     @Column
-    var password: String = ""
+    var password: String,
 
-    @ElementCollection(targetClass = Role::class, fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    var roles: Set<Role> = setOf(Role.USER)
-}
+    @Column
+    var roles: String = Role.USER.name, // TODO maybe create a separate roles table
 
-data class UserDto(
-    val id: UUID,
-    val username: String,
-    val email: String,
+    @Id
+    @GeneratedValue
+    var id: Long? = null,
 )
-
-fun User.toDto() = UserDto(id, username, email)

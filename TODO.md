@@ -4,11 +4,7 @@ This file contains the tasks that need to be done in order for the app to be fin
 Some of them such as user authorization are more crucial than others and some are outright optional.
 
 ### Backend
-- [ ] General
-    - [X] Switch backend to laravel (better documentation...)
-    - [ ] Debloat laravel (research which files can be safely removed)
-
-- [ ] CMS
+- [ ] CMS (This functionality isn't very urgent)
     - [ ] Design a generic table view
     - [ ] Create a menu bar component
     - [ ] View users
@@ -17,6 +13,7 @@ Some of them such as user authorization are more crucial than others and some ar
 - [ ] Authentication
     - [X] Implement sign-in and register endpoints
     - [X] Validate api requests
+    - [ ] Add refreshToken functionality
 
 - [ ] Chatting
     - [ ] Save messages to DB (do we want to store messages or should it be client-side???)
@@ -44,9 +41,6 @@ Some of them such as user authorization are more crucial than others and some ar
 
 ### Docker
 - [X] Mount react app as a volume for real time updates
-- [ ] Fix backend, so that it works with Laravel
-    - [ ] Configure a nginx container, so that it can host the backend
-    - [ ] Mount application as a volume for hot reloading support
 
 ### Testing
 - [ ] Add Github actions

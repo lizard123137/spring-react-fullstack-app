@@ -14,7 +14,7 @@ class JwtService(
     private val jwtProperties: JwtProperties,
 ) {
 
-    private val key = SecretKeySpec(jwtProperties.key.toByteArray(Charsets.UTF_8), SignatureAlgorithm.HS512.toString())
+    private val key = SecretKeySpec(jwtProperties.key.toByteArray(Charsets.UTF_8), "HmacSHA512")
 
     fun generateToken(authentication: Authentication): String {
         val username = authentication.name

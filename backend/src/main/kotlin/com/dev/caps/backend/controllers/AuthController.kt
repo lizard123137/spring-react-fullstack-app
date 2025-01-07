@@ -2,8 +2,6 @@ package com.dev.caps.backend.controllers
 
 import com.dev.caps.backend.models.Role
 import com.dev.caps.backend.models.User
-import com.dev.caps.backend.models.UserDto
-import com.dev.caps.backend.models.toDto
 import com.dev.caps.backend.requests.LoginRequest
 import com.dev.caps.backend.requests.RegisterRequest
 import com.dev.caps.backend.responses.AuthResponse
@@ -15,7 +13,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 
 @RequestMapping("/api/auth")
@@ -34,11 +31,11 @@ class AuthController(
         if (userService.existsByUsername(request.username))
             return ResponseEntity("Username is taken", HttpStatus.BAD_REQUEST)
 
-        val user = User()
-        user.username = request.username
-        user.email = request.email
-        user.password = request.password
-        user.roles = setOf(Role.USER)
+        val user = User(
+            username = request.username,
+            email = request.email,
+            password = request.password
+        )
 
         userService.save(user)
         return ResponseEntity("User created", HttpStatus.CREATED)

@@ -1,8 +1,9 @@
 package com.dev.caps.backend.config.security
 
 import com.dev.caps.backend.filters.AuthFilter
-import com.dev.caps.backend.services.CustomUserDetailsService
 import com.dev.caps.backend.services.JwtService
+import com.dev.caps.backend.services.UserDetailsService
+import com.dev.caps.backend.services.UserService
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -20,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableConfigurationProperties(JwtProperties::class)
 class SecurityConfig(
-    private val customUserDetailsService: CustomUserDetailsService,
+    private val userDetailsService: UserDetailsService,
     private val jwtAuthEntryPoint: JwtAuthEntryPoint,
     private val jwtService: JwtService,
 ) {
@@ -55,7 +56,7 @@ class SecurityConfig(
 
     @Bean
     fun authFilter(): AuthFilter {
-        return AuthFilter(jwtService, customUserDetailsService)
+        return AuthFilter(jwtService, userDetailsService)
     }
 }
 

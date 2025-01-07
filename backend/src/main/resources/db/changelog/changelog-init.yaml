@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_users_table
+      author: lizard123137
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: users
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(250)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(250)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(250)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: roles
+                  type: varchar(250)
+                  constraints:
+                    nullable: false
