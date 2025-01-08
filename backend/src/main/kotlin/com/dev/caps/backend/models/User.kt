@@ -21,3 +21,15 @@ class User(
     @GeneratedValue
     var id: Long? = null,
 )
+
+data class UserDto(
+    val username: String,
+    val email: String,
+    val roles: Set<Role>,
+)
+
+fun User.toUserDto() = UserDto(
+    username = username,
+    email = email,
+    roles = roles.split(",").map { Role.valueOf(it.trim()) }.toSet()
+)

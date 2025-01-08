@@ -2,7 +2,6 @@ package com.dev.caps.backend.filters
 
 import com.dev.caps.backend.services.JwtService
 import com.dev.caps.backend.services.UserDetailsService
-import com.dev.caps.backend.services.UserService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

@@ -34,6 +34,7 @@ class SecurityConfig(
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
+            .cors { it.configurationSource(corsConfigurationSource()) }
             .csrf { it.disable() }
             .exceptionHandling { it.authenticationEntryPoint(jwtAuthEntryPoint) }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
@@ -44,7 +45,6 @@ class SecurityConfig(
 
             }
             .httpBasic {}
-            .cors { it.configurationSource(corsConfigurationSource()) }
         http
             .addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter::class.java)
         return http.build()
@@ -64,7 +64,7 @@ class SecurityConfig(
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
 
-        configuration.allowedOrigins = listOf("http://localhost:5173")
+        configuration.allowedOrigins = listOf("http://localhost:5173", "http://frontend:5173")
         configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
         configuration.allowedHeaders = listOf("*")
         configuration.allowCredentials = true

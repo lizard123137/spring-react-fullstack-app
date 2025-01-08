@@ -17,16 +17,19 @@ class JwtService(
     private val key = SecretKeySpec(jwtProperties.key.toByteArray(Charsets.UTF_8), "HmacSHA512")
 
     fun generateToken(authentication: Authentication): String {
-        val username = authentication.name
-
-        val currentDate = Date()
-        val expirationDate = Date(currentDate.time + jwtProperties.accessTokenExpiration)
-
-        // TODO fix deprecated
         return Jwts.builder()
-            .setSubject(username)
-            .setIssuedAt(currentDate)
-            .setExpiration(expirationDate)
+            .subject(authentication.name)
+            .issuedAt(Date())
+            .expiration(Date(Date().time + jwtProperties.accessTokenExpiration))
+            .signWith(key)
+            .compact()
+    }
+
+    fun generateRefreshToken(authentication: Authentication): String {
+        return Jwts.builder()
+            .subject(authentication.name)
+            .issuedAt(Date())
+            .expiration(Date(Date().time + jwtProperties.refreshTokenExpiration))
             .signWith(key)
             .compact()
     }

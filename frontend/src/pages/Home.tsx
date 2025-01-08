@@ -64,7 +64,7 @@ export default function Home() {
                         onChange={(e) => setMessage(e.target.value)}
                         value={message}
                         required/>  
-                    <input className="btn-primary" type="submit" value="Register"/>
+                    <input className="btn-primary" type="submit" value="Send message"/>
                 </form>
             </article>
 

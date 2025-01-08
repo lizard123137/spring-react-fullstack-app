@@ -1,73 +1,99 @@
-import axios from "../api/axios";
 import { createContext, useEffect, useState } from "react";
+import { LoginRequest } from "../models/requests/LoginRequest";
+import { RegisterRequest } from "../models/requests/RegisterRequest";
+import { User } from "../models/User"
+import { useNavigate } from "react-router-dom";
+import { loginAPI, registerAPI } from "../services/AuthService";
+import { toast } from "react-toastify";
+import axios from "axios";
 
-// TODO move user interface to separate file
-interface User {
-    id: number;
-    username: string;
-    email: string;
-}
-
-interface ProviderProps {
+type AuthContextType = {
     user: User | null;
     token: string | null;
-    login: (username: string, password: string) => Promise<void>;
-    register: (username: string, email:string, password: string) => Promise<void>;
+    refreshToken: string | null;
+
+    register: (request: RegisterRequest) => void;
+    login: (request: LoginRequest) => void;
     logout: () => void;
-    isAuthenticated: boolean;
-}
 
-const AuthContext = createContext<ProviderProps | undefined>(undefined);
+    isLoggedIn: () => boolean;
+};
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+type Props = { children: React.ReactNode };
+
+export const AuthContext = createContext<AuthContextType>({} as AuthContextType)
+
+export const AuthProvider = ({children} : Props) => {
+    const navigate = useNavigate();
+
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(null);
+    const [refreshToken, setRefreshToken] = useState<string | null>(null);
+
+    const [isReady, setIsReady] = useState<boolean>(false);
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('user');
-        const storedToken = localStorage.getItem('token');
+        const user = localStorage.getItem("user");
+        const token = localStorage.getItem("token");
+        const refreshToken = localStorage.getItem("refreshToken");
 
-        if (storedToken && storedUser) {
-            setToken(storedToken);
-            setUser(JSON.parse(storedUser));
+        if(user && token && refreshToken) {
+            setUser(JSON.parse(user));
+            setToken(token);
+            setRefreshToken(refreshToken);
+
+            axios.defaults.headers.common["Authorization"] = "Bearer " + token;
         }
+
+        setIsReady(true);
     }, []);
 
-    const login = async (username: string, password: string) => {
-        try {
-            const response = await axios.post('/auth/login', { username, password });
-            console.log(response.data);
-        } catch (error) {
-            console.error('Login failed: ', error);
-            throw new Error('Invalid username or password');
-        }
+    const register = async (request: RegisterRequest) => {
+        await registerAPI(request).then((response) => {
+            console.log(response?.data);
+
+            toast.success("Register success!");
+            //navigate("/login");
+        }).catch((e) => toast.warning("Server error occurred!"));
+
+        navigate("/chat");
     }
 
-    const register = async (username: string, email: string, password: string) => {
-        try {
-            const response = await axios.post('/auth/register', { username, email, password });
-            console.log(response);
-        } catch (error) {
-            console.error('Registration failed: ', error);
-            throw new Error('Registration failed. Please try again...');
-        }
+    const login = async (request: LoginRequest) => {
+        await loginAPI(request).then((response) => {
+            if (!response) return;            
+
+            localStorage.setItem("user", JSON.stringify(response.data.user));
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("refreshToken", response.data.refreshToken);
+
+            setUser(response.data.user);
+            setToken(response.data.token);
+            setRefreshToken(response.data.refreshToken);
+
+            navigate("/chat");
+        }).catch((e) => toast.warning("Server error occured!"));
     }
 
     const logout = () => {
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
+
         setUser(null);
         setToken(null);
-        
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        setRefreshToken(null);
+
+        navigate("/");
     }
 
-    const isAuthenticated = !!token;
+    const isLoggedIn = () => {
+        return !!user;
+    }
 
     return (
-        <AuthContext.Provider value={{ user, token, login, register, logout, isAuthenticated }}>
-            {children}
+        <AuthContext.Provider value={{ user, token, refreshToken, register, login, logout, isLoggedIn }}>
+            { isReady ? children : null }
         </AuthContext.Provider>
     )
 }
-
-export default AuthContext;

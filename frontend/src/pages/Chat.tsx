@@ -1,7 +1,7 @@
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useEffect, useState } from "react";
-import Message from "./Message";
-import DarkModeSwitch from "../../components/darkModeSwitch";
+import Message from "../components/Message";
+import DarkModeSwitch from "../components/DarkModeSwitch";
 
 export default function Chat() {
     const WS_URL = "ws://localhost:8080/api/chat";
