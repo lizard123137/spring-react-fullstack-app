@@ -17,6 +17,14 @@ class User(
     @Column
     var roles: String = Role.USER.name, // TODO maybe create a separate roles table
 
+    @ManyToMany
+    @JoinTable(
+        name = "user_chats",
+        joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
+        inverseJoinColumns = [JoinColumn(name = "chat_id", referencedColumnName = "id")]
+    )
+    var chats: Set<Chat> = mutableSetOf(),
+
     @Id
     @GeneratedValue
     var id: Long? = null,

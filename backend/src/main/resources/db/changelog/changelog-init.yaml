@@ -38,3 +38,70 @@ databaseChangeLog:
                   type: varchar(250)
                   constraints:
                     nullable: false
+  - changeSet:
+      id: create_chats_table
+      author: lizard123137
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: chats
+      changes:
+        - createTable:
+            tableName: chats
+            columns:
+              - column:
+                  name: id
+                  type: varchar(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: admin_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: create_users_chats_join_table
+      author: lizard123137
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: chats
+      changes:
+        - createTable:
+            tableName: user_chats
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: chat_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: chats
+            baseColumnNames: admin_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_chat_admin_user
+
+        - addForeignKeyConstraint:
+            baseTableName: user_chats
+            baseColumnNames: user_id,
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_user_chat_user
+
+        - addForeignKeyConstraint:
+            baseTableName: user_chats
+            baseColumnNames: chat_id
+            referencedTableName: chats
+            referencedColumnNames: id
+            constraintName: fk_user_chat_chat

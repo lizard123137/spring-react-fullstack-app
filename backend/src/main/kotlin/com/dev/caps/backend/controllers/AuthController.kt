@@ -7,18 +7,18 @@ import com.dev.caps.backend.responses.RegisterResponse
 import com.dev.caps.backend.services.AuthService
 import org.springframework.web.bind.annotation.*
 
-@RequestMapping("/api/auth")
+@RequestMapping("/api")
 @RestController
 class AuthController(
     private val authService: AuthService,
 ) {
 
-    @PostMapping("register")
+    @PostMapping("/auth/register")
     fun register(@RequestBody request: RegisterRequest): RegisterResponse {
         return authService.register(request)
     }
 
-    @PostMapping("login")
+    @PostMapping("/auth/login")
     fun login(@RequestBody request: LoginRequest): LoginResponse {
         return authService.login(request)
     }

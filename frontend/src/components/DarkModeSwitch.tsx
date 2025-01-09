@@ -6,7 +6,7 @@ export default function DarkModeSwitch() {
     const { isDarkMode, toggleDarkMode } = useTheme();
 
     return(
-        <button className="px-8 text-4xl" onClick={() => toggleDarkMode()}>
+        <button className="py-8 px-10 text-4xl" onClick={() => toggleDarkMode()}>
             {
                 isDarkMode && <FontAwesomeIcon icon={faMoon}/>
             }

@@ -15,7 +15,7 @@ export default function Home() {
     }
 
     return(
-        <div className="dark:bg-gray-800 dark:text-white">
+        <div className="min-h-screen dark:bg-gray-800 dark:text-white">
             <header className="p-4 md:p-24 bg-gray-200 dark:bg-slate-900 flex flex-col items-center justify-center">
                 <h1 className="heading p-10 text-4xl md:text-7xl">Spring chat</h1>
                 <Link
@@ -64,11 +64,11 @@ export default function Home() {
                         onChange={(e) => setMessage(e.target.value)}
                         value={message}
                         required/>  
-                    <input className="btn-primary" type="submit" value="Send message"/>
+                    <input className="btn-primary" type="submit" value="Send email"/>
                 </form>
             </article>
 
-            <footer className="bottom-0 p-5 bg-gray-200 dark:bg-slate-900 text-center">
+            <footer className="fixed w-full bottom-0 p-5 bg-gray-200 dark:bg-slate-900 text-center">
                 Created by <a className="text-green-400" href="https://github.com/lizard123137">Michal Gagos</a>
             </footer>
         </div>

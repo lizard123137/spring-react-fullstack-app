@@ -13,6 +13,7 @@ import Profile from './pages/Profile';
 import Register from './pages/Register';
 
 import './index.css';
+import Layout from './pages/Layout';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
@@ -24,11 +25,14 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          <Route path="/users">
-            <Route path=":id" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route element={<Layout />}>
+            <Route path="/users">
+              <Route path=":id" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            </Route>
+
+            <Route path="/chat/:id" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
           </Route>
 
-          <Route path="/chat" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
 
           <Route path="/*" element={<NotFound />} />
         </Routes>

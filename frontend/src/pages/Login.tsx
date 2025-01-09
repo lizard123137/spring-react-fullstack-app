@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoginRequest } from "../models/requests/LoginRequest";
 import * as Yup from "yup"
+import DarkModeSwitch from "../components/DarkModeSwitch";
 
 const validation = Yup.object().shape({
     username: Yup.string().required("Username is required"),
@@ -27,6 +28,9 @@ const Login = () => {
 
     return (
         <div className="h-screen dark:bg-gray-800 dark:text-white flex items-center justify-center">
+            <header className="fixed top-0 right-0">
+                <DarkModeSwitch />
+            </header>
             <div className="w-full md:w-1/2 p-12 dark:bg-slate-900 bg-gray-200 rounded-lg shadow-full">
                 <form onSubmit={handleSubmit(handleLogin)} className="flex flex-col gap-3 text-black">
                     <input
@@ -35,7 +39,9 @@ const Login = () => {
                         className="input"
                         {...register("username")}    
                     />
-                    { errors.username ? <p>{ errors.username.message }</p> : "" }
+                    <span className="text-red-500">
+                        { errors.username ? <p>{ errors.username.message }</p> : "" }
+                    </span>
 
                     <input
                         type="password"
@@ -43,7 +49,9 @@ const Login = () => {
                         className="input"
                         {...register("password")}    
                     />
-                    { errors.password ? <p>{ errors.password.message }</p> : "" }
+                    <span className="text-red-500">
+                        { errors.password ? <p>{ errors.password.message }</p> : "" }
+                    </span>
 
                     <input className="btn-primary" type="submit" value="Sign-in"/>
                 </form>

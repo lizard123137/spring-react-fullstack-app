@@ -2,10 +2,13 @@ import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useEffect, useState } from "react";
 import Message from "../components/Message";
 import DarkModeSwitch from "../components/DarkModeSwitch";
+import { useParams } from "react-router";
 
 export default function Chat() {
-    const WS_URL = "ws://localhost:8080/api/chat";
+    const WS_URL = "http://localhost:8080/ws";
     
+    const { id } = useParams()
+
     const [ messages, setMessages] = useState<string[]>([])
     const [ message, setMessage ] = useState<string>("");
     const { sendMessage, readyState, lastJsonMessage } = useWebSocket(WS_URL);
@@ -39,16 +42,13 @@ export default function Chat() {
 
     // TEST message sending
     useEffect(() => {
-        const message = { type: "greet", payload: "Hello WebSocket!" };
+        const message = { sender: "caps", content: "greet", groupId: "123" };
         sendMessage(JSON.stringify(message));
     }, []);
 
     return (
         <div className="h-screen dark:bg-gray-800">
-            <header className="bg-violet-500 text-white fixed top-0 w-full h-20 flex justify-between">
-                <h1 className="ml-5 text-4xl font-bold flex items-center">Example channel name</h1>
-                <DarkModeSwitch />
-            </header>
+            <h1 className="p-8 text-4xl font-bold flex items-center">Channel ID: { id }</h1>
 
             <div className="w-full h-full fixed top-20 px-5 overflow-y-auto">
                 {messages.map((m) => (
@@ -57,7 +57,7 @@ export default function Chat() {
                 <div className="h-64"></div>
             </div>
 
-            <footer className="w-full fixed bottom-0">
+            <footer className="fixed bottom-0">
                 <p className="dark:text-white ml-5">Websocket status: {connectionStatus[readyState]}</p>
                 <form 
                     className="block w-full flex flex-col md:flex-row"

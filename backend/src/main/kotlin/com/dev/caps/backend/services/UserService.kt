@@ -1,7 +1,10 @@
 package com.dev.caps.backend.services
 
 import com.dev.caps.backend.models.User
+import com.dev.caps.backend.models.UserDto
+import com.dev.caps.backend.models.toUserDto
 import com.dev.caps.backend.repositories.UserRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -19,13 +22,18 @@ class UserService(
     }
 
     @Transactional(readOnly = true)
-    fun findByEmail(email: String): User? {
-        return userRepository.findByEmail(email)
+    fun findById(id: Long): UserDto? {
+        return userRepository.findById(id)?.toUserDto()
     }
 
     @Transactional(readOnly = true)
-    fun findByUsername(username: String): User? {
-        return userRepository.findByUsername(username)
+    fun findByEmail(email: String): UserDto? {
+        return userRepository.findByEmail(email)?.toUserDto()
+    }
+
+    @Transactional(readOnly = true)
+    fun findByUsername(username: String): UserDto? {
+        return userRepository.findByUsername(username)?.toUserDto()
     }
 
     @Transactional(readOnly = true)

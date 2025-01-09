@@ -13,13 +13,11 @@ export const ThemeContext = createContext<ProviderProps>({
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     const [isDarkMode , setIsDarkMode] = useState<boolean>(() => {
         const savedTheme = localStorage.getItem("isDarkMode");
-        return savedTheme ? JSON.parse(savedTheme) : false;
+        return savedTheme ? JSON.parse(savedTheme) : true;
     });
 
     useEffect(() => {
         localStorage.setItem("isDarkMode", JSON.stringify(isDarkMode));
-
-        console.log("called")
 
         if (isDarkMode)
             document.body.classList.add("dark");
