@@ -22,9 +22,9 @@ Some of them such as user authorization are more crucial than others and some ar
 
 ### Frontend
 - [ ] Authentication
-    - [ ] Send requests using Axios
-    - [ ] Store tokens
-    - [ ] Redirect from protected routes
+    - [X] Send requests using Axios
+    - [X] Store tokens
+    - [X] Redirect from protected routes
     - [ ] Sign-out functionality
     - [ ] Delete user account functionality
     - [ ] User profiles
