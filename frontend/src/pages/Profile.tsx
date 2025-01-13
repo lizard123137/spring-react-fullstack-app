@@ -9,7 +9,7 @@ const Profile = () => {
 
     useEffect(() => {
         if (id) {
-            const user = userAPI(id!);
+            const user = userAPI(id);
             console.log(user);
         }
     }, []);

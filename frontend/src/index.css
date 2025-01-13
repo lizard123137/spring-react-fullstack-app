@@ -4,22 +4,25 @@
 
 @layer components {
     .heading {
-        @apply text-violet-500 font-bold drop-shadow-sm
+        @apply bg-gradient-to-r from-purple-600 to-indigo-400 text-transparent bg-clip-text font-bold drop-shadow-md
     }
     .sub-heading {
-        @apply text-green-400 font-bold drop-shadow-sm
+        @apply bg-gradient-to-r from-green-300 to-green-600 text-transparent bg-clip-text font-bold drop-shadow-md
     }
     .input {
-        @apply w-full px-5 py-2 rounded-3xl focus:ring-violet-500 bg-gray-100
+        @apply w-full px-5 py-2 rounded-3xl focus:ring-violet-500 bg-white
     }
     .textarea {
-        @apply w-full px-5 py-2 rounded-3xl focus:ring-violet-500 bg-gray-100
+        @apply w-full px-5 py-2 rounded-3xl focus:ring-violet-500 bg-white
     }
     .btn-primary {
-        @apply block w-full px-5 py-2 bg-violet-500 text-center text-white font-semibold rounded-3xl shadow-md hover:bg-violet-700
+        @apply block w-full px-5 py-2 bg-gradient-to-r from-violet-500 to-indigo-600 text-center text-white font-semibold rounded-3xl shadow-md hover:bg-violet-700
     }
-    .btn-secondary{
-        @apply block w-full px-5 py-2 bg-green-400 text-center text-white font-semibold rounded-3xl shadow-md hover:bg-green-600
+    .btn-secondary {
+        @apply block w-full px-5 py-2 bg-gradient-to-r from-green-400 to-green-500 text-center text-white font-semibold rounded-3xl shadow-md hover:bg-green-600
+    }
+    .background {
+        @apply min-h-screen bg-gradient-to-r dark:from-gray-800 dark:to-slate-700 dark:text-white
     }
 }
 

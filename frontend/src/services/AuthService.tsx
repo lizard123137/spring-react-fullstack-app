@@ -24,5 +24,4 @@ export const registerAPI = async (request: RegisterRequest) => {
     } catch (error) {
         handleError(error);
     }
-
 }

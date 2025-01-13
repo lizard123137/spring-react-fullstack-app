@@ -53,10 +53,8 @@ export const AuthProvider = ({children} : Props) => {
             console.log(response?.data);
 
             toast.success("Register success!");
-            //navigate("/login");
+            navigate("/login");
         }).catch((e) => toast.warning("Server error occurred!"));
-
-        navigate("/chat");
     }
 
     const login = async (request: LoginRequest) => {
@@ -71,8 +69,8 @@ export const AuthProvider = ({children} : Props) => {
             setToken(response.data.token);
             setRefreshToken(response.data.refreshToken);
 
-            navigate("/chat");
-        }).catch((e) => toast.warning("Server error occured!"));
+            navigate(`/users/${user?.id}`);
+        }).catch((e) => toast.warning("Server error occurred!"));
     }
 
     const logout = () => {

@@ -24,7 +24,6 @@ class ChatController(
     @GetMapping("api/chat/{id}")
     fun getChat(@PathVariable id: String): ChatDto {
         return chatService.findById(id)
-            ?: throw Exception("Chat with id: $id not found") // TODO change exception
     }
 
     @MessageMapping("/chat.sendMessage")
