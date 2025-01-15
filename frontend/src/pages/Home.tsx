@@ -50,7 +50,7 @@ export default function Home() {
 
             <article className="px-2 py-4 md:px-20">
                 <h2 className="sub-heading text-center text-3xl md:text-5xl mb-5">Contact us</h2>
-                <form onSubmit={sendEmail} className="flex flex-col gap-3 text-black">
+                <form onSubmit={sendEmail} className="flex flex-col gap-3 text-black mb-20">
                     <input
                         type="email"
                         placeholder="Your Email address..."

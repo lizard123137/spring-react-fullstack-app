@@ -2,10 +2,10 @@ import axios from "axios"
 import { toast } from "react-toastify";
 
 export const handleError = (error: any) => {
-    if(axios.isAxiosError(error)) {
+    if (axios.isAxiosError(error)) {
         let err = error.response;
 
-        if(Array.isArray(err?.data.errors)) {
+        if (Array.isArray(err?.data.errors)) {
             for(let val of err?.data.errors) {
                 toast.warning(val.description);
             }

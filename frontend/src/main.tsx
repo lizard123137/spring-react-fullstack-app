@@ -33,7 +33,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <Route path="/chat/:id" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
           </Route>
 
-
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
