@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import DarkModeSwitch from "../components/DarkModeSwitch";
 import { userAPI } from "../services/UserService";
 import { useEffect } from "react";
@@ -34,7 +34,10 @@ const Profile = () => {
                             return (
                                 <li className="flex justify-between ring-2 ring-green-400 p-5 rounded-3xl my-3">
                                     <span>{ channel }</span>
-                                    <button className="mr-4">Join</button>
+                                    <Link 
+                                        to={{pathname: `/chat/${channel}`}}
+                                        className="mr-4"
+                                    >Visit</Link>
                                 </li>
                             )
                         })}

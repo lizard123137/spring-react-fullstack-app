@@ -3,17 +3,25 @@ import { useEffect, useState } from "react";
 import Message from "../components/Message";
 import DarkModeSwitch from "../components/DarkModeSwitch";
 import { useParams } from "react-router";
+import { ChatModel } from "../models/ChatModel";
+import { chatAPI } from "../services/ChatService";
+import { toast } from "react-toastify";
 
 export default function Chat() {
     const WS_URL = "http://localhost:8080/ws";
     
     const { id } = useParams()
 
-    const [ messages, setMessages] = useState<string[]>([])
+    const [ chat, setChat ] = useState<ChatModel | null>(null)
+    const [ messages, setMessages ] = useState<string[]>([])
     const [ message, setMessage ] = useState<string>("");
     const { sendMessage, readyState, lastJsonMessage } = useWebSocket(WS_URL);
 
     useEffect(() => {
+        chatAPI(id!!).then((response) => {
+            if (response) setChat(response.data);
+        }).catch((e) => toast.warning("Failed to get chat information!"))
+
         if (lastJsonMessage)
             setMessages((prevMessages => [
                 ...prevMessages,
@@ -48,9 +56,13 @@ export default function Chat() {
 
     return (
         <div className="h-screen dark:bg-gray-800">
-            <h1 className="p-8 text-4xl font-bold flex items-center">Channel ID: { id }</h1>
+            <div className="p-8 flex flex-col items-center">
+                <h1 className="text-4xl font-bold">{ id }</h1>
+                <span>Owner: { chat?.admin.username ?? "Error" }</span>
+            </div>
 
-            <div className="w-full h-full fixed top-20 px-5 overflow-y-auto">
+            <div className="h-full fixed top-20 px-5 overflow-y-auto">
+                <Message user="Michal" content="test"/>
                 {messages.map((m) => (
                     <Message user="Michal" content={m}/>
                 ))}

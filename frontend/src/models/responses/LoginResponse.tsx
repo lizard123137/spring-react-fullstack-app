@@ -1,7 +1,7 @@
-import { User } from "../User";
+import { UserModel } from "../UserModel";
 
 export type LoginResponse = {
-    user: User;
+    user: UserModel;
     token: string;
     refreshToken: string;
 };

@@ -22,7 +22,7 @@ data class ChatDto(
     var users: MutableSet<UserDto> = mutableSetOf(),
 )
 
-fun Chat.toChatDto() = ChatDto(
+fun Chat.toDto() = ChatDto(
     id = id,
     admin = admin.toUserDto(),
     users = users.map { it.toUserDto() }.toMutableSet(),

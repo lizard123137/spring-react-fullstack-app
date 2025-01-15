@@ -11,7 +11,10 @@ const Modal: React.FC<Props> = ({ visible, children }) => {
     const dialogRef = useRef<HTMLDialogElement | null>(null);
 
     useEffect(() => {
-        dialogRef.current?.showModal();
+        if (visible)
+            dialogRef.current?.showModal();
+        else
+            dialogRef.current?.close();
     }, [visible]);
 
     const close = () => {

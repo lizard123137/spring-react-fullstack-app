@@ -1,14 +1,14 @@
 import { createContext, useEffect, useState } from "react";
 import { LoginRequest } from "../models/requests/LoginRequest";
 import { RegisterRequest } from "../models/requests/RegisterRequest";
-import { User } from "../models/User"
+import { UserModel } from "../models/UserModel"
 import { useNavigate } from "react-router-dom";
 import { loginAPI, registerAPI } from "../services/AuthService";
 import { toast } from "react-toastify";
 import axios from "axios";
 
 type AuthContextType = {
-    user: User | null;
+    user: UserModel | null;
     token: string | null;
     refreshToken: string | null;
 
@@ -26,7 +26,7 @@ export const AuthContext = createContext<AuthContextType>({} as AuthContextType)
 export const AuthProvider = ({children} : Props) => {
     const navigate = useNavigate();
 
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<UserModel | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [refreshToken, setRefreshToken] = useState<string | null>(null);
 

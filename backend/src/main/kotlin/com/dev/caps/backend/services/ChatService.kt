@@ -2,7 +2,7 @@ package com.dev.caps.backend.services
 
 import com.dev.caps.backend.models.Chat
 import com.dev.caps.backend.models.ChatDto
-import com.dev.caps.backend.models.toChatDto
+import com.dev.caps.backend.models.toDto
 import com.dev.caps.backend.repositories.ChatRepository
 import org.springframework.data.crossstore.ChangeSetPersister
 import org.springframework.stereotype.Service
@@ -16,12 +16,12 @@ class ChatService(
 
     @Transactional
     fun save(chat: Chat): ChatDto {
-        return chatRepository.save(chat).toChatDto()
+        return chatRepository.save(chat).toDto()
     }
 
     @Transactional(readOnly = true)
     fun findById(id: String): ChatDto {
-        return chatRepository.findById(id).getOrNull()?.toChatDto()
+        return chatRepository.findById(id).getOrNull()?.toDto()
             ?: throw ChangeSetPersister.NotFoundException()
     }
 }

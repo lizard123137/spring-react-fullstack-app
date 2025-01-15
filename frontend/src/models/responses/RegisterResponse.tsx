@@ -1,7 +1,7 @@
-import { User } from "../User";
+import { UserModel } from "../UserModel";
 
 export type RegisterResponse = {
-    user: User;
+    user: UserModel;
     token: String;
     refreshToken: String;
 }
