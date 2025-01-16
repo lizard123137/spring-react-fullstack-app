@@ -1,5 +1,6 @@
 package com.dev.caps.backend.config
 
+import com.dev.caps.backend.filters.JwtHandshakeInterceptor
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.context.annotation.Configuration
 import org.springframework.messaging.converter.DefaultContentTypeResolver
@@ -13,16 +14,20 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 @Configuration
 @EnableWebSocketMessageBroker
-class WebSocketConfig: WebSocketMessageBrokerConfigurer {
+class WebSocketConfig(
+    private val jwtHandshakeInterceptor: JwtHandshakeInterceptor,
+): WebSocketMessageBrokerConfigurer {
 
     override fun configureMessageBroker(registry: MessageBrokerRegistry) {
-        registry.enableSimpleBroker("/chat")
+        registry.enableSimpleBroker("/topic")
         registry.setApplicationDestinationPrefixes("/app")
-        registry.setUserDestinationPrefix("/chat")
     }
 
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-        registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS()
+        registry.addEndpoint("/ws")
+            .setAllowedOrigins("*")
+            .withSockJS()
+            .setInterceptors(jwtHandshakeInterceptor)
     }
 
     override fun configureMessageConverters(messageConverters: MutableList<MessageConverter>): Boolean {

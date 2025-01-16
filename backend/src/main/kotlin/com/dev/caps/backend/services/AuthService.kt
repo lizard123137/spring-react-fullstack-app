@@ -1,12 +1,15 @@
 package com.dev.caps.backend.services
 
 import com.dev.caps.backend.exceptions.EmailTakenException
+import com.dev.caps.backend.exceptions.InvalidJwtTokenException
+import com.dev.caps.backend.exceptions.UserNotFoundException
 import com.dev.caps.backend.exceptions.UsernameTakenException
 import com.dev.caps.backend.models.User
 import com.dev.caps.backend.models.toUserDto
 import com.dev.caps.backend.repositories.UserRepository
 import com.dev.caps.backend.requests.LoginRequest
 import com.dev.caps.backend.requests.RegisterRequest
+import com.dev.caps.backend.responses.AuthResponse
 import com.dev.caps.backend.responses.LoginResponse
 import com.dev.caps.backend.responses.RegisterResponse
 import org.springframework.security.authentication.AuthenticationManager
@@ -40,8 +43,8 @@ class AuthService(
 
         return RegisterResponse(
             user = user.toUserDto(),
-            token = jwtService.generateToken(auth),
-            refreshToken = jwtService.generateRefreshToken(auth)
+            token = jwtService.generateToken(request.username),
+            refreshToken = jwtService.generateRefreshToken(request.username)
         )
     }
 
@@ -52,13 +55,28 @@ class AuthService(
         val auth = authenticationManager.authenticate(UsernamePasswordAuthenticationToken(request.username, request.password))
         SecurityContextHolder.getContext().authentication = auth
 
-        val token = jwtService.generateToken(auth)
-        val refreshToken = jwtService.generateRefreshToken(auth)
+        val token = jwtService.generateToken(request.username)
+        val refreshToken = jwtService.generateRefreshToken(request.username)
 
         return LoginResponse(
             user = user.toUserDto(),
             token = token,
             refreshToken = refreshToken,
+        )
+    }
+
+    fun refresh(refreshToken: String): AuthResponse {
+        if (!jwtService.validateToken(refreshToken))
+            throw InvalidJwtTokenException(refreshToken)
+
+        val username = jwtService.getUsernameFromToken(refreshToken)
+            ?: throw InvalidJwtTokenException(refreshToken)
+        if (!userRepository.existsByUsername(username))
+            throw UserNotFoundException(username)
+
+        return AuthResponse(
+            accessToken = jwtService.generateToken(username),
+            refreshToken = jwtService.generateRefreshToken(username)
         )
     }
 }

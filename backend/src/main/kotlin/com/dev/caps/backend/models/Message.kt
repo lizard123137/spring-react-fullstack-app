@@ -1,9 +1,9 @@
 package com.dev.caps.backend.models
 
 data class Message(
-    val token: String,
-    val content: String,
+    var sender: String? = null,
+    var chatId: String,
 
+    val content: String,
     val type: MessageType,
-    val chatId: String,
 )

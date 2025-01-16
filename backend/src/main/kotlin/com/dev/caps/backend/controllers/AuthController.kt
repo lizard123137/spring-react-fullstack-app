@@ -2,6 +2,7 @@ package com.dev.caps.backend.controllers
 
 import com.dev.caps.backend.requests.LoginRequest
 import com.dev.caps.backend.requests.RegisterRequest
+import com.dev.caps.backend.responses.AuthResponse
 import com.dev.caps.backend.responses.LoginResponse
 import com.dev.caps.backend.responses.RegisterResponse
 import com.dev.caps.backend.services.AuthService
@@ -21,5 +22,10 @@ class AuthController(
     @PostMapping("/auth/login")
     fun login(@RequestBody request: LoginRequest): LoginResponse {
         return authService.login(request)
+    }
+
+    @PostMapping("/auth/refresh")
+    fun refreshToken(@RequestBody refreshToken: String): AuthResponse {
+        return authService.refresh(refreshToken)
     }
 }

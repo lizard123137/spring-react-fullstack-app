@@ -1,7 +1,7 @@
 import { UserModel } from "./UserModel"
 
 export type ChatModel = {
-    id: String,
+    id: string,
     admin: UserModel,
     users: Array<UserModel>,
 };

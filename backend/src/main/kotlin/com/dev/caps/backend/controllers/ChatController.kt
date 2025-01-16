@@ -6,8 +6,11 @@ import com.dev.caps.backend.models.Message
 import com.dev.caps.backend.services.ChatService
 import com.dev.caps.backend.services.JwtService
 import com.dev.caps.backend.services.UserService
+import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.Payload
+import org.springframework.messaging.handler.annotation.SendTo
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
@@ -27,17 +30,17 @@ class ChatController(
     }
 
     @MessageMapping("/chat.sendMessage")
-    fun sendMessage(@Payload message: Message) {
-        if(!jwtService.validateToken(message.token))
-            throw InvalidJwtTokenException(message.token)
+    @SendTo("/topic/chat/{chatId}")
+    fun sendMessage(
+        @DestinationVariable chatId: String,
+        message: Message,
+        headerAccessor: SimpMessageHeaderAccessor,
+    ): Message {
+        val username = headerAccessor.sessionAttributes?.get("username") as String?
 
-        val username = jwtService.getUsernameFromToken(message.token)
-            ?: throw InvalidJwtTokenException(message.token)
-        val chat = chatService.findById(message.chatId)
-            ?: throw Exception("Chat with id ${message.chatId} not found") // TODO change exception
+        message.sender = username ?: "Unknown"
+        message.chatId = chatId
 
-        if (chat.users.any { it.username == username }) {
-            simpMessagingTemplate.convertAndSend("/chat/${message.chatId}", message)
-        }
+        return message
     }
 }

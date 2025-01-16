@@ -1,58 +1,54 @@
-import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useEffect, useState } from "react";
 import Message from "../components/Message";
-import DarkModeSwitch from "../components/DarkModeSwitch";
 import { useParams } from "react-router";
 import { ChatModel } from "../models/ChatModel";
 import { chatAPI } from "../services/ChatService";
 import { toast } from "react-toastify";
+import WebSocketService from "../services/WebSocketService";
+import { ChatMessage } from "../models/ChatMessageModel";
+import { handleError } from "../helpers/ErrorHandler";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Chat() {
-    const WS_URL = "http://localhost:8080/ws";
-    
     const { id } = useParams()
 
+    const { token } = useAuth()
     const [ chat, setChat ] = useState<ChatModel | null>(null)
-    const [ messages, setMessages ] = useState<string[]>([])
+    const [ messages, setMessages ] = useState<ChatMessage[]>([])
     const [ message, setMessage ] = useState<string>("");
-    const { sendMessage, readyState, lastJsonMessage } = useWebSocket(WS_URL);
 
     useEffect(() => {
         chatAPI(id!!).then((response) => {
             if (response) setChat(response.data);
         }).catch((e) => toast.warning("Failed to get chat information!"))
 
-        if (lastJsonMessage)
-            setMessages((prevMessages => [
-                ...prevMessages,
-                JSON.stringify(lastJsonMessage)
-            ]));
-    }, [lastJsonMessage]);
+        const handleConnect = () => {
+            if (chat) {
+                WebSocketService.subscribe(chat.id, (message: ChatMessage) => {
+                    setMessages((prevMessages) => [...prevMessages, message]);
+                })
+            } else {
+                toast.warning("Failed to connect to chat");
+            }
+        }
+
+        if (token) {
+            WebSocketService.connect(token, handleConnect, handleError);
+        } else {
+            toast.warning("Missing JWT");
+        }
+
+        return () => {
+            WebSocketService.disconnect();
+        }
+
+    }, [chat, ]);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         
-        if (readyState === ReadyState.OPEN) {
-            sendMessage(message);
-            setMessage('');
-        } else {
-            console.warn("WebSocket is not open.");
-        }
+        console.warn("WebSocket is not open.");
     }
-
-    const connectionStatus = {
-        [ReadyState.CONNECTING]: 'Connecting',
-        [ReadyState.OPEN]: 'Open',
-        [ReadyState.CLOSING]: 'Closing',
-        [ReadyState.CLOSED]: 'Closed',
-        [ReadyState.UNINSTANTIATED]: 'Uninstantiating',
-    };
-
-    // TEST message sending
-    useEffect(() => {
-        const message = { sender: "caps", content: "greet", groupId: "123" };
-        sendMessage(JSON.stringify(message));
-    }, []);
 
     return (
         <div className="h-screen dark:bg-gray-800">
@@ -62,15 +58,14 @@ export default function Chat() {
             </div>
 
             <div className="h-full fixed top-20 px-5 overflow-y-auto">
-                <Message user="Michal" content="test"/>
+                <Message message={{sender: "Caps", content: "Hello", chatId: id!}}/>
                 {messages.map((m) => (
-                    <Message user="Michal" content={m}/>
+                    <Message message={m}/>
                 ))}
                 <div className="h-64"></div>
             </div>
 
             <footer className="fixed bottom-0">
-                <p className="dark:text-white ml-5">Websocket status: {connectionStatus[readyState]}</p>
                 <form 
                     className="block w-full flex flex-col md:flex-row"
                     onSubmit={handleSubmit}>

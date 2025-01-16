@@ -16,18 +16,18 @@ class JwtService(
 
     private val key = SecretKeySpec(jwtProperties.key.toByteArray(Charsets.UTF_8), "HmacSHA512")
 
-    fun generateToken(authentication: Authentication): String {
+    fun generateToken(subject: String): String {
         return Jwts.builder()
-            .subject(authentication.name)
+            .subject(subject)
             .issuedAt(Date())
             .expiration(Date(Date().time + jwtProperties.accessTokenExpiration))
             .signWith(key)
             .compact()
     }
 
-    fun generateRefreshToken(authentication: Authentication): String {
+    fun generateRefreshToken(subject: String): String {
         return Jwts.builder()
-            .subject(authentication.name)
+            .subject(subject)
             .issuedAt(Date())
             .expiration(Date(Date().time + jwtProperties.refreshTokenExpiration))
             .signWith(key)

@@ -31,10 +31,10 @@ const Layout = () => {
             <nav className="fixed h-screen w-96 bg-gray-200 dark:bg-gray-900 dark:text-white">
                 <ul className="p-2">
                     <Link to={{pathname: `/users/${user?.id}`}}>
-                        <li className="p-5 rounded-3xl ring-2 ring-green-400 my-2">My Profile</li>
+                        <li className="p-5 rounded-3xl ring-2 ring-green-400 my-2 text-center">My Profile</li>
                     </Link>
-                    <li onClick={() => setVisible(!visible)} className="p-5 rounded-3xl ring-2 ring-green-400 my-2 cursor-pointer">Join channel</li>
-                    <li onClick={logout} className="p-5 rounded-3xl ring-2 ring-green-400 my-2 cursor-pointer">Logout</li>
+                    <li onClick={() => setVisible(!visible)} className="p-5 rounded-3xl ring-2 ring-green-400 my-2 text-center cursor-pointer">Join channel</li>
+                    <li onClick={logout} className="p-5 rounded-3xl ring-2 ring-green-400 my-2 text-center cursor-pointer">Logout</li>
                 </ul>
             </nav>
             <div className="ml-96 dark:text-white">

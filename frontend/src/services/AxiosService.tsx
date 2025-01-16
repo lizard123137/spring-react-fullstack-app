@@ -88,7 +88,7 @@ class AxiosIntercepter {
             throw new Error("No refresh token available");
         }
 
-        const response = await this.axiosInstance.post("/auth/refreshToken", {
+        const response = await this.axiosInstance.post("/auth/refresh", {
             refreshToken,
         });
         return response.data; // Expected { accessToken: String, refreshToken: String }

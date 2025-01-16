@@ -1,5 +1,4 @@
 import { Link, useParams } from "react-router";
-import DarkModeSwitch from "../components/DarkModeSwitch";
 import { userAPI } from "../services/UserService";
 import { useEffect } from "react";
 
