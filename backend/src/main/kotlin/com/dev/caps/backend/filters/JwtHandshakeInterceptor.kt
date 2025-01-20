@@ -27,7 +27,7 @@ class JwtHandshakeInterceptor(
                 .getHeader(HttpHeaders.AUTHORIZATION)
                 .removePrefix("Bearer ")
 
-            if (!token.isNullOrEmpty()) {
+            if (token.isNotEmpty()) {
                 val username = jwtService.getUsernameFromToken(token)
                 if (username != null) {
                     attributes["username"] = username

@@ -1,5 +1,5 @@
 import { Client, StompSubscription } from "@stomp/stompjs";
-import SockJS from "sockjs-client";
+import SockJS from "sockjs-client/dist/sockjs";
 import { ChatMessage } from "../models/ChatMessageModel";
 
 const SOCKET_URL = "http://localhost:8080/ws";
