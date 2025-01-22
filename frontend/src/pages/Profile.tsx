@@ -1,40 +1,43 @@
 import { Link, useParams } from "react-router";
 import { userAPI } from "../services/UserService";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { UserModel } from "../models/UserModel";
+import { handleError } from "../helpers/ErrorHandler";
 
 
 const Profile = () => {
-    const { id } = useParams();
+    const { username } = useParams();
+    
+    const [user, setUser] = useState<UserModel | null>(null);
 
     useEffect(() => {
-        if (id) {
-            const user = userAPI(id);
-            console.log(user);
+        const fetchData = async () => {
+            const response = await userAPI(username!);
+            if(response?.data)
+                setUser(response?.data)
+        }
+
+        if(username) {
+            fetchData().catch((e) => handleError(e));
         }
     }, []);
-
-    const userProfile = {
-        username: "Caps",
-        description: "Hello world my name is caps and i use react",
-        channels: ["test", "admins", "hackers"],
-    }
 
     return (
         <div className="min-h-screen dark:bg-gray-800 dark:text-white">
             <div className="w-full flex flex-col items-center">
-                <div className="w-40 h-40 mt-10 bg-green-400 rounded-full"></div>
-                <h2 className="text-center text-6xl">{ userProfile.username }</h2>
-                <p>{ userProfile.description }</p>
+                <img src={user?.avatar} className="w-40 h-40 mt-10 bg-green-400 rounded-full"/>
+                <h2 className="text-center text-6xl">{ user ? user.username : "Unknown" }</h2>
+                <p>{ user?.description ? user.description : "No description..." }</p>
 
                 <div className="w-1/2">
                     <h3 className="text-3xl">User chats:</h3>
                     <ul>
-                        { userProfile.channels.map((channel) => {
+                        { user?.chats.map((chatId) => {
                             return (
                                 <li className="flex justify-between ring-2 ring-green-400 p-5 rounded-3xl my-3">
-                                    <span>{ channel }</span>
+                                    <span>{ chatId }</span>
                                     <Link 
-                                        to={{pathname: `/chat/${channel}`}}
+                                        to={{pathname: `/chat/${chatId}`}}
                                         className="mr-4"
                                     >Visit</Link>
                                 </li>

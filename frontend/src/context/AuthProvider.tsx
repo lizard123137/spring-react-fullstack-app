@@ -34,7 +34,7 @@ export const AuthProvider = ({children} : Props) => {
 
     useEffect(() => {
         const user = localStorage.getItem("user");
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("accessToken");
         const refreshToken = localStorage.getItem("refreshToken");
 
         if(user && token && refreshToken) {
@@ -50,10 +50,19 @@ export const AuthProvider = ({children} : Props) => {
 
     const register = async (request: RegisterRequest) => {
         await registerAPI(request).then((response) => {
-            console.log(response?.data);
-
+            if (!response) return;            
+            
             toast.success("Register success!");
-            navigate("/login");
+
+            localStorage.setItem("user", JSON.stringify(response.data.user));
+            localStorage.setItem("accessToken", response.data.accessToken);
+            localStorage.setItem("refreshToken", response.data.refreshToken);
+
+            setUser(response.data.user);
+            setToken(response.data.accessToken);
+            setRefreshToken(response.data.refreshToken);
+
+            navigate(`/users/${response.data.user.username}`);
         }).catch((e) => toast.warning("Server error occurred!"));
     }
 
@@ -62,20 +71,20 @@ export const AuthProvider = ({children} : Props) => {
             if (!response) return;            
 
             localStorage.setItem("user", JSON.stringify(response.data.user));
-            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("accessToken", response.data.accessToken);
             localStorage.setItem("refreshToken", response.data.refreshToken);
 
             setUser(response.data.user);
-            setToken(response.data.token);
+            setToken(response.data.accessToken);
             setRefreshToken(response.data.refreshToken);
 
-            navigate(`/users/${user?.id}`);
+            navigate(`/users/${response.data.user.username}`);
         }).catch((e) => toast.warning("Server error occurred!"));
     }
 
     const logout = () => {
         localStorage.removeItem("user");
-        localStorage.removeItem("token");
+        localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
 
         setUser(null);

@@ -1,5 +1,7 @@
 export type UserModel = {
-    id: number;
     username: string;
+    description: string;
+    avatar: string;
     email: string;
+    chats: Array<string>;
 };

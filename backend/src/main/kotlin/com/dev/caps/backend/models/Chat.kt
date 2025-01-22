@@ -9,7 +9,7 @@ class Chat(
     var id: String,
 
     @ManyToOne
-    @JoinColumn(name = "admin_id", nullable = false)
+    @JoinColumn(name = "admin_username", nullable = false)
     var admin: User,
 
     @ManyToMany
@@ -24,6 +24,6 @@ data class ChatDto(
 
 fun Chat.toDto() = ChatDto(
     id = id,
-    admin = admin.toUserDto(),
-    users = users.map { it.toUserDto() }.toMutableSet(),
+    admin = admin.toDto(),
+    users = users.map { it.toDto() }.toMutableSet(),
 )

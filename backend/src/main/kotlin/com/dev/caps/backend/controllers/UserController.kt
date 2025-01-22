@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 @Controller
 @RequestMapping("/api")
 class UserController(private val userService: UserService) {
-    @GetMapping("/user/{id}")
-    fun getUser(@PathVariable id: String): ResponseEntity<UserDto> {
-        val user = userService.findById(id.toLong())
-            ?: throw UserNotFoundException(id)
+    @GetMapping("/user/{username}")
+    fun getUser(@PathVariable username: String): ResponseEntity<UserDto> {
+        val user = userService.findByUsername(username)
+            ?: throw UserNotFoundException(username)
 
         return ResponseEntity.ok(user)
     }

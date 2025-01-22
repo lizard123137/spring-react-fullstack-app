@@ -18,9 +18,13 @@ export default function Chat() {
     const [ message, setMessage ] = useState<string>("");
 
     useEffect(() => {
-        chatAPI(id!!).then((response) => {
-            if (response) setChat(response.data);
-        }).catch((e) => toast.warning("Failed to get chat information!"))
+        const fetchChat = async () => {
+            const response = await chatAPI(id!);
+            if(response?.data)
+                setChat(response.data);
+        };
+
+        fetchChat().catch((e) => handleError(e));
 
         const handleConnect = () => {
             if (chat) {
@@ -42,12 +46,16 @@ export default function Chat() {
             WebSocketService.disconnect();
         }
 
-    }, [chat, ]);
+    }, [chat]);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
-        
-        console.warn("WebSocket is not open.");
+        event.preventDefault();
+        WebSocketService.sendMessage({
+            chatId: id!,
+            sender: "caps",
+            content: message,
+        });
+        console.warn("Send message");
     }
 
     return (
@@ -70,7 +78,7 @@ export default function Chat() {
                     className="block w-full flex flex-col md:flex-row"
                     onSubmit={handleSubmit}>
                     <input
-                        className="input basis-3/4 bg-gray-100 dark:bg-slate-600 shadow-lg"
+                        className="input basis-3/4 bg-gray-100 dark:bg-slate-600 dark:text-white shadow-lg"
                         type="text"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}

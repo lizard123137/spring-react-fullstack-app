@@ -31,8 +31,8 @@ export class WebSocketService {
         }
     }
 
-    sendMessage(chatId: string, message: ChatMessage) {
-        const path = `/app/chat/${chatId}`
+    sendMessage(message: ChatMessage) {
+        const path = `/app/chat/${message.chatId}`
         if (this.client && this.client.connected) {
             this.client.publish({
                 destination: path,

@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_admin_user
+      author: lizard123137
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: admin
+              - column:
+                  name: email
+                  value: admin@admin.com
+              - column:
+                  name: password
+                  value: $2a$12$vhu4BKzuWJzgz6G4v2ZeU.yhF/zlQ5TXshVqxoxdpq1VFhB6bTiMi # Password is "admin"
+              - column:
+                  name: description
+                  value: "This user is the admin of the application."
+              - column:
+                  name: avatar
+                  value: https://www.marketplaceveterinary.com/blog/wp-content/uploads/2022/02/iStock-927401870-2000x1335.jpg
+              - column:
+                  name: roles
+                  value: ADMIN
+
+  - changeSet:
+      id: create_public_chat
+      author: lizard123137
+      changes:
+        - insert:
+            tableName: chats
+            columns:
+              - column:
+                  name: id
+                  value: public
+              - column:
+                  name: admin_username
+                  value: admin
+
+  - changeSet:
+      id: add_admin_to_public_chat
+      author: lizard123137
+      changes:
+        - insert:
+            tableName: user_chats
+            columns:
+              - column:
+                  name: user_username
+                  value: admin
+              - column:
+                  name: chat_id
+                  value: public

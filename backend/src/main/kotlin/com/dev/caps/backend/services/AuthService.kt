@@ -5,7 +5,7 @@ import com.dev.caps.backend.exceptions.InvalidJwtTokenException
 import com.dev.caps.backend.exceptions.UserNotFoundException
 import com.dev.caps.backend.exceptions.UsernameTakenException
 import com.dev.caps.backend.models.User
-import com.dev.caps.backend.models.toUserDto
+import com.dev.caps.backend.models.toDto
 import com.dev.caps.backend.repositories.UserRepository
 import com.dev.caps.backend.requests.LoginRequest
 import com.dev.caps.backend.requests.RegisterRequest
@@ -44,8 +44,8 @@ class AuthService(
         SecurityContextHolder.getContext().authentication = auth
 
         return RegisterResponse(
-            user = user.toUserDto(),
-            token = jwtService.generateToken(request.username),
+            user = user.toDto(),
+            accessToken = jwtService.generateToken(request.username),
             refreshToken = jwtService.generateRefreshToken(request.username)
         )
     }
@@ -61,8 +61,8 @@ class AuthService(
         val refreshToken = jwtService.generateRefreshToken(request.username)
 
         return LoginResponse(
-            user = user.toUserDto(),
-            token = token,
+            user = user.toDto(),
+            accessToken = token,
             refreshToken = refreshToken,
         )
     }

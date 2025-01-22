@@ -27,7 +27,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
           <Route element={<Layout />}>
             <Route path="/users">
-              <Route path=":id" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route path=":username" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             </Route>
 
             <Route path="/chat/:id" element={<ProtectedRoute><Chat /></ProtectedRoute>} />

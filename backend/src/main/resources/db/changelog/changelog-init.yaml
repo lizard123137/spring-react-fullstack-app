@@ -2,50 +2,43 @@ databaseChangeLog:
   - changeSet:
       id: create_users_table
       author: lizard123137
-      preConditions:
-        - onFail: MARK_RAN
-          not:
-            tableExists:
-              tableName: users
       changes:
         - createTable:
             tableName: users
             columns:
               - column:
-                  name: id
-                  type: BIGINT
-                  autoIncrement: true
+                  name: username
+                  type: varchar(255)
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: username
-                  type: varchar(250)
+                  name: email
+                  type: varchar(255)
                   constraints:
                     nullable: false
               - column:
-                  name: email
-                  type: varchar(250)
-                  constraints:
-                    nullable: false
+                  name: description
+                  type: varchar(2048)
+                  defaultValue: ""
+              - column:
+                  name: avatar
+                  type: varchar(2048)
+                  defaultValue: ""
               - column:
                   name: password
-                  type: varchar(250)
+                  type: varchar(255)
                   constraints:
                     nullable: false
               - column:
                   name: roles
-                  type: varchar(250)
+                  type: varchar(255)
                   constraints:
                     nullable: false
+
   - changeSet:
       id: create_chats_table
       author: lizard123137
-      preConditions:
-        - onFail: MARK_RAN
-          not:
-            tableExists:
-              tableName: chats
       changes:
         - createTable:
             tableName: chats
@@ -57,26 +50,21 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: admin_id
-                  type: bigint
+                  name: admin_username
+                  type: varchar(255)
                   constraints:
                     nullable: false
 
   - changeSet:
       id: create_users_chats_join_table
       author: lizard123137
-      preConditions:
-        - onFail: MARK_RAN
-          not:
-            tableExists:
-              tableName: chats
       changes:
         - createTable:
             tableName: user_chats
             columns:
               - column:
-                  name: user_id
-                  type: bigint
+                  name: user_username
+                  type: varchar(255)
                   constraints:
                     nullable: false
               - column:
@@ -87,16 +75,16 @@ databaseChangeLog:
 
         - addForeignKeyConstraint:
             baseTableName: chats
-            baseColumnNames: admin_id
+            baseColumnNames: admin_username
             referencedTableName: users
-            referencedColumnNames: id
+            referencedColumnNames: username
             constraintName: fk_chat_admin_user
 
         - addForeignKeyConstraint:
             baseTableName: user_chats
-            baseColumnNames: user_id,
+            baseColumnNames: user_username,
             referencedTableName: users
-            referencedColumnNames: id
+            referencedColumnNames: username
             constraintName: fk_user_chat_user
 
         - addForeignKeyConstraint:

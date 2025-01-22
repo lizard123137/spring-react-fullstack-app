@@ -1,7 +1,7 @@
 import { Link, Outlet, useNavigate } from "react-router";
 import DarkModeSwitch from "../components/DarkModeSwitch";
 import { useAuth } from "../hooks/useAuth";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Modal from "../components/Modal";
 
 const Layout = () => {
@@ -30,7 +30,7 @@ const Layout = () => {
             </Modal>
             <nav className="fixed h-screen w-96 bg-gray-200 dark:bg-gray-900 dark:text-white">
                 <ul className="p-2">
-                    <Link to={{pathname: `/users/${user?.id}`}}>
+                    <Link to={{pathname: `/users/${user?.username}`}}>
                         <li className="p-5 rounded-3xl ring-2 ring-green-400 my-2 text-center">My Profile</li>
                     </Link>
                     <li onClick={() => setVisible(!visible)} className="p-5 rounded-3xl ring-2 ring-green-400 my-2 text-center cursor-pointer">Join channel</li>

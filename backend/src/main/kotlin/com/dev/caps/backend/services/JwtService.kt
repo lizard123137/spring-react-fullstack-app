@@ -38,7 +38,7 @@ class JwtService(
         return Jwts.parser()
             .setSigningKey(jwtProperties.key.toByteArray(Charsets.UTF_8))
             .build()
-            .parseClaimsJwt(token)
+            .parseClaimsJws(token)
             .body
             .subject
     }

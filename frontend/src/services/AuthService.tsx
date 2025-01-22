@@ -7,7 +7,7 @@ import { client } from "./AxiosService";
 
 export const loginAPI = async (request: LoginRequest) => {
     try {
-        const response = await client.post<LoginResponse>("auth/login", request);
+        const response = await client.post<LoginResponse>("/auth/login", request);
         return response;
     } catch (error) {
         handleError(error);
@@ -16,7 +16,7 @@ export const loginAPI = async (request: LoginRequest) => {
 
 export const registerAPI = async (request: RegisterRequest) => {
     try {
-        const response = await client.post<RegisterResponse>("auth/register", request);
+        const response = await client.post<RegisterResponse>("/auth/register", request);
         return response;
     } catch (error) {
         handleError(error);
