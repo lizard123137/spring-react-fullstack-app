@@ -1,4 +1,4 @@
-import { handleError } from "../helpers/ErrorHandler";
+import { handleError } from "../utils/ErrorHandler";
 import { ChatModel } from "../models/ChatModel";
 import { client } from "./AxiosService";
 

@@ -39,7 +39,7 @@ class AxiosIntercepter {
                 if (
                     error.response &&
                     error.response.status === 401 &&
-                    error.response.data.message === "TokenExpiredError" &&
+                    error.response.data.message === "JWT token is invalid or expired" &&
                     !originalRequest._retry
                 ) {
                     if (!this.isRefreshing) {

@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client';
 import { AuthProvider } from './context/AuthProvider';
 import { ThemeProvider } from './context/ThemeProvider';
 
-import ProtectedRoute from './helpers/ProtectedRoute';
+import ProtectedRoute from './components/ProtectedRoute';
 import Chat from './pages/Chat';
 import NotFound from './pages/NotFound';
 import Home from './pages/Home';

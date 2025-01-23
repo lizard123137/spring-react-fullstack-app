@@ -1,5 +1,5 @@
 import { UserModel } from "../models/UserModel";
-import { handleError } from "../helpers/ErrorHandler";
+import { handleError } from "../utils/ErrorHandler";
 import { client } from "./AxiosService";
 
 

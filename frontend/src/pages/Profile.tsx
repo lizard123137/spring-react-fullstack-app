@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router";
 import { userAPI } from "../services/UserService";
 import { useEffect, useState } from "react";
 import { UserModel } from "../models/UserModel";
-import { handleError } from "../helpers/ErrorHandler";
+import { handleError } from "../utils/ErrorHandler";
 
 
 const Profile = () => {

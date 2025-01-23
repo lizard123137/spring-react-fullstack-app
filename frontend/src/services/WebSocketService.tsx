@@ -1,53 +1,55 @@
-import { Client, StompSubscription } from "@stomp/stompjs";
-import SockJS from "sockjs-client/dist/sockjs";
+import { Client, messageCallbackType, StompSubscription } from "@stomp/stompjs";
 import { ChatMessage } from "../models/ChatMessageModel";
 
-const SOCKET_URL = "http://localhost:8080/ws";
-
 export class WebSocketService {
-    client: Client | null = null;
-    subscriptions: { [key: string]: StompSubscription } = {};
+    client: Client;
+    subscription: StompSubscription | null = null;
 
-    connect(jwtToken: string, onConnect: () => void, onError: (error: any) => void) {
+    constructor() {
         this.client = new Client({
-            webSocketFactory: () => new SockJS(SOCKET_URL),
-            connectHeaders: { Authorization: `Bearer ${jwtToken}`},
+            brokerURL: "ws://localhost:8080/ws",
             reconnectDelay: 5000,
             heartbeatIncoming: 4000,
             heartbeatOutgoing: 4000,
-            onConnect: onConnect,
-            onStompError: onError,
         });
+    }
+
+    connect(jwtToken: string, onConnect: () => void) {
+        this.client.connectHeaders = { Authorization: `Bearer ${jwtToken}`};
+        this.client.onConnect = onConnect;
+
+        this.client.onStompError = (frame) => {
+            console.error("Broker reported error: " + frame.headers["message"]);
+            console.error("Additional details: " + frame.body)
+        }
+
         this.client.activate();
     }
 
-    subscribe(chatId: string, callback: (message: ChatMessage) => void) {
-        const path = `/topic/chat/${chatId}`;
-        if (this.client && this.client.connected) {
-            this.subscriptions[chatId] = this.client.subscribe(path, (message) => {
-                const body = JSON.parse(message.body);
-                callback(body);
-            })
-        }
+    subscribe(chatId: string, callback: messageCallbackType) {
+        this.subscription = this.client.subscribe(`/topic/${chatId}`, callback);
     }
 
     sendMessage(message: ChatMessage) {
-        const path = `/app/chat/${message.chatId}`
-        if (this.client && this.client.connected) {
-            this.client.publish({
-                destination: path,
-                body: JSON.stringify(message),
-            })
+        if (!this.client) {
+            console.error("Websocket client doesn't exist!");
+            return;
         }
+
+        if (!message.chatId) {
+            console.error("Message is missing a chat ID!");
+            return;
+        }
+
+        this.client.publish({
+            destination: `/topic/${message.chatId}`,
+            body: JSON.stringify(message),
+        });
     }
 
     disconnect() {
-        if (this.client) {
-            Object.values(this.subscriptions).forEach((sub) => {
-                if (sub) sub.unsubscribe();
-            })
-            this.client.deactivate();
-        }
+        this.subscription?.unsubscribe();
+        this.client.deactivate();
     }
 }
 

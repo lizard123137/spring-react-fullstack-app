@@ -1,6 +1,5 @@
 package com.dev.caps.backend.controllers
 
-import com.dev.caps.backend.exceptions.InvalidJwtTokenException
 import com.dev.caps.backend.models.ChatDto
 import com.dev.caps.backend.models.Message
 import com.dev.caps.backend.services.ChatService
@@ -8,16 +7,15 @@ import com.dev.caps.backend.services.JwtService
 import com.dev.caps.backend.services.UserService
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
-import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.messaging.handler.annotation.SendTo
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor
 import org.springframework.messaging.simp.SimpMessagingTemplate
-import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
-@Controller
+@RestController
 @RequestMapping("/api")
 class ChatController(
     private val simpMessagingTemplate: SimpMessagingTemplate,

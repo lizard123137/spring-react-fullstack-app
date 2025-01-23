@@ -41,7 +41,7 @@ internal class ExceptionControllerAdvice {
         )
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(AuthenticationCredentialsNotFoundException::class)
     fun handleAuthenticationCredentialsNotFoundException(e: AuthenticationCredentialsNotFoundException): ExceptionResponse {
         return ExceptionResponse(

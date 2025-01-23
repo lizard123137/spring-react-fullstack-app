@@ -6,7 +6,7 @@ import { chatAPI } from "../services/ChatService";
 import { toast } from "react-toastify";
 import WebSocketService from "../services/WebSocketService";
 import { ChatMessage } from "../models/ChatMessageModel";
-import { handleError } from "../helpers/ErrorHandler";
+import { handleError } from "../utils/ErrorHandler";
 import { useAuth } from "../hooks/useAuth";
 
 export default function Chat() {
@@ -18,6 +18,20 @@ export default function Chat() {
     const [ message, setMessage ] = useState<string>("");
 
     useEffect(() => {
+        if (!token || !id) return;
+
+        WebSocketService.connect(token, () => {
+            console.log("Connected to WebSocket");
+        });
+
+        WebSocketService.subscribe(id, (resp) => {
+            console.log(resp.body);
+
+            resp.ack()
+        })
+    }, []);
+
+    useEffect(() => {
         const fetchChat = async () => {
             const response = await chatAPI(id!);
             if(response?.data)
@@ -25,28 +39,7 @@ export default function Chat() {
         };
 
         fetchChat().catch((e) => handleError(e));
-
-        const handleConnect = () => {
-            if (chat) {
-                WebSocketService.subscribe(chat.id, (message: ChatMessage) => {
-                    setMessages((prevMessages) => [...prevMessages, message]);
-                })
-            } else {
-                toast.warning("Failed to connect to chat");
-            }
-        }
-
-        if (token) {
-            WebSocketService.connect(token, handleConnect, handleError);
-        } else {
-            toast.warning("Missing JWT");
-        }
-
-        return () => {
-            WebSocketService.disconnect();
-        }
-
-    }, [chat]);
+    }, []);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

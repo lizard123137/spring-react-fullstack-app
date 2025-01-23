@@ -1,4 +1,4 @@
-import { handleError } from "../helpers/ErrorHandler";
+import { handleError } from "../utils/ErrorHandler";
 import { LoginRequest } from "../models/requests/LoginRequest";
 import { RegisterRequest } from "../models/requests/RegisterRequest";
 import { LoginResponse } from "../models/responses/LoginResponse";
