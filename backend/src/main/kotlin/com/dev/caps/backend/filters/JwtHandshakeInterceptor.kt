@@ -1,6 +1,7 @@
 package com.dev.caps.backend.filters
 
 import com.dev.caps.backend.services.JwtService
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
 import org.springframework.http.server.ServerHttpRequest
 import org.springframework.http.server.ServerHttpResponse
@@ -14,6 +15,8 @@ import java.lang.Exception
 class JwtHandshakeInterceptor(
     private val jwtService: JwtService,
 ): HandshakeInterceptor {
+
+    private val log = LoggerFactory.getLogger(JwtHandshakeInterceptor::class.java)
 
     override fun beforeHandshake(
         request: ServerHttpRequest,
@@ -31,11 +34,16 @@ class JwtHandshakeInterceptor(
                 val username = jwtService.getUsernameFromToken(token)
                 if (username != null) {
                     attributes["username"] = username
+                    return true
+                } else {
+                    log.error("Username not found")
                 }
+            } else {
+                log.error("Token is empty")
             }
         }
 
-        return true
+        return false
     }
 
     override fun afterHandshake(

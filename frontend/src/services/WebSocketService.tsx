@@ -8,15 +8,28 @@ export class WebSocketService {
     constructor() {
         this.client = new Client({
             brokerURL: "ws://localhost:8080/ws",
-            reconnectDelay: 5000,
-            heartbeatIncoming: 4000,
-            heartbeatOutgoing: 4000,
+            debug: (s) => console.log(s),
+            reconnectDelay: 2000,
+            heartbeatIncoming: 200,
+            heartbeatOutgoing: 200,
         });
     }
 
     connect(jwtToken: string, onConnect: () => void) {
         this.client.connectHeaders = { Authorization: `Bearer ${jwtToken}`};
         this.client.onConnect = onConnect;
+        
+        this.client.onWebSocketClose = (e) => {
+            console.warn("Websocket closed: ", e);
+        }
+
+        this.client.onDisconnect = () => {
+            console.warn("Disconnected from WebSocket server");
+        }
+
+        this.client.onWebSocketError = (e) => {
+            console.error("Websocket error: " + e.body);
+        }
 
         this.client.onStompError = (frame) => {
             console.error("Broker reported error: " + frame.headers["message"]);
@@ -27,6 +40,10 @@ export class WebSocketService {
     }
 
     subscribe(chatId: string, callback: messageCallbackType) {
+        if (this.subscription) {
+            console.warn("Already subscribed to topic.");
+            this.subscription.unsubscribe();
+        }
         this.subscription = this.client.subscribe(`/topic/${chatId}`, callback);
     }
 

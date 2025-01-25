@@ -12,7 +12,7 @@ import { useAuth } from "../hooks/useAuth";
 export default function Chat() {
     const { id } = useParams()
 
-    const { token } = useAuth()
+    const { user, token } = useAuth()
     const [ chat, setChat ] = useState<ChatModel | null>(null)
     const [ messages, setMessages ] = useState<ChatMessage[]>([])
     const [ message, setMessage ] = useState<string>("");
@@ -22,13 +22,14 @@ export default function Chat() {
 
         WebSocketService.connect(token, () => {
             console.log("Connected to WebSocket");
+            
+            WebSocketService.subscribe(id, (resp) => {
+                const msg = JSON.parse(resp.body) as ChatMessage;
+                setMessages((prevMessages) => [...prevMessages, msg]);
+
+                resp.ack()
+            });
         });
-
-        WebSocketService.subscribe(id, (resp) => {
-            console.log(resp.body);
-
-            resp.ack()
-        })
     }, []);
 
     useEffect(() => {
@@ -43,12 +44,19 @@ export default function Chat() {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
+        if (!user) {
+            console.error("User not logged in");
+            return;
+        }
+
         WebSocketService.sendMessage({
             chatId: id!,
-            sender: "caps",
+            sender: user?.username,
             content: message,
         });
-        console.warn("Send message");
+
+        setMessage("");
     }
 
     return (
@@ -59,7 +67,6 @@ export default function Chat() {
             </div>
 
             <div className="h-full fixed top-20 px-5 overflow-y-auto">
-                <Message message={{sender: "Caps", content: "Hello", chatId: id!}}/>
                 {messages.map((m) => (
                     <Message message={m}/>
                 ))}

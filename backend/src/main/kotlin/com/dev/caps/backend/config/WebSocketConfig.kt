@@ -25,9 +25,8 @@ class WebSocketConfig(
 
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
         registry.addEndpoint("/ws")
-            .setAllowedOrigins("*")
-            .withSockJS()
-            .setInterceptors(jwtHandshakeInterceptor)
+            .setAllowedOrigins("http://localhost:5173")
+            //.setInterceptors(jwtHandshakeInterceptor) // TODO check if message user matches the provided token
     }
 
     override fun configureMessageConverters(messageConverters: MutableList<MessageConverter>): Boolean {
