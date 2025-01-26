@@ -34,7 +34,7 @@ const Profile = () => {
                     <ul>
                         { user?.chats.map((chatId) => {
                             return (
-                                <li className="flex justify-between ring-2 ring-green-400 p-5 rounded-3xl my-3">
+                                <li key={chatId} className="flex justify-between ring-2 ring-green-400 p-5 rounded-3xl my-3">
                                     <span>{ chatId }</span>
                                     <Link 
                                         to={{pathname: `/chat/${chatId}`}}

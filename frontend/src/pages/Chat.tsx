@@ -66,11 +66,10 @@ export default function Chat() {
                 <span>Owner: { chat?.admin.username ?? "Error" }</span>
             </div>
 
-            <div className="h-full fixed top-20 px-5 overflow-y-auto">
-                {messages.map((m) => (
-                    <Message message={m}/>
+            <div className="max-h-1/4 w-full flex flex-col fixed top-20 px-5 overflow-y-auto">
+                {messages.map((m, idx) => (
+                    <Message key={idx} message={m}/>
                 ))}
-                <div className="h-64"></div>
             </div>
 
             <footer className="fixed bottom-0">
